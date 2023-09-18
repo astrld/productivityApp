@@ -28,6 +28,8 @@ public class startUp extends AppCompatActivity {
 
     private boolean height = false;
 
+    private boolean metric = false;
+
     private TextView startUpName, questionText,messageText, textView1, textView2;
     private EditText editText1, editText2, editText3, editText4;
     @Override
@@ -111,6 +113,15 @@ public class startUp extends AppCompatActivity {
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                if(metric && !editText3.getText().toString().equals("")){
+                    int cm = Integer.parseInt(editText3.getText().toString());
+                    int feet = (int) (cm/30.48);
+                    int inches = (int) ((cm - feet*30.48)/2.54);
+                    editText3.setText(feet + "");
+                    editText4.setText(inches + "");
+                }
+                metric = false;
                 button1.setBackground(getResources().getDrawable(R.drawable.button2));
                 button2.setBackground(getResources().getDrawable(R.drawable.button3));
                 if(height){
@@ -137,19 +148,31 @@ public class startUp extends AppCompatActivity {
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(!metric && !editText3.getText().toString().equals("") && !editText4.getText().toString().equals("")){
+                    int feet = Integer.parseInt(editText3.getText().toString());
+                    int inches = Integer.parseInt(editText4.getText().toString());
+                    int cm = (int) (feet*30.48 + inches*2.54);
+                    System.out.println(cm);
+                    editText3.setText(cm + "");
+                    editText4.setText("");
+                }
+                metric = true;
+                textView1.setText(""); textView2.setText("");
+                textView2.setVisibility(View.INVISIBLE);
+                editText4.setVisibility(View.INVISIBLE);
                 button1.setBackground(getResources().getDrawable(R.drawable.button3));
                 button2.setBackground(getResources().getDrawable(R.drawable.button2));
                 if(height){
                     editText3.setVisibility(View.VISIBLE);
                     textView1.setVisibility(View.VISIBLE);
                     editText3.setX(editText1.getX() + editText1.getWidth()/2 - editText4.getWidth()/2);
-                    button1.setX(editText3.getX() + editText3.getWidth() - button1.getWidth());
-                    button2.setX(editText4.getX());
+                    button1.setX(editText3.getX());
+                    button2.setX(editText3.getX() + editText3.getWidth() - button2.getWidth());
                     textView1.setText("cm");
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            textView1.setX(editText3.getX() + editText3.getWidth() - textView1.getWidth());
+                            textView1.setX(editText3.getX() + editText3.getWidth() - textView1.getWidth() + 15);
                         }
                     }, 1);
                 }
@@ -242,6 +265,7 @@ public class startUp extends AppCompatActivity {
             textView2.setVisibility(View.VISIBLE);
             textView1.setText("ft");
             textView2.setText("in");
+            metric = false;
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
