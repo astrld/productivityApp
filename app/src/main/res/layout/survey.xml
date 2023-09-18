@@ -113,6 +113,7 @@
             android:layout_centerVertical="true"
             android:textColor="@color/blue4"
             android:id="@+id/editText1"
+            android:inputType="textCapWords"
             android:backgroundTint="@color/blue4"
             android:textStyle="bold"
             />
@@ -127,6 +128,7 @@
             android:layout_centerVertical="true"
             android:textColor="@color/blue4"
             android:id="@+id/editText3"
+            android:inputType="number"
             android:backgroundTint="@color/blue4"
             android:textStyle="bold"
             />
@@ -141,6 +143,7 @@
             android:layout_centerVertical="true"
             android:textColor="@color/blue4"
             android:id="@+id/editText4"
+            android:inputType="number"
             android:backgroundTint="@color/blue4"
             android:textStyle="bold"
             />
@@ -157,8 +160,64 @@
             android:layout_below="@id/editText1"
             android:textColor="@color/blue4"
             android:id="@+id/editText2"
+            android:inputType="textCapWords"
             android:backgroundTint="@color/blue4"
             android:textStyle="bold"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:gravity="left"
+            android:textSize="20dp"
+            android:fontFamily="@font/verdana"
+            android:text=""
+            android:layout_height="60dp"
+            android:layout_centerHorizontal="true"
+            android:layout_toRightOf="@id/editText3"
+            android:layout_alignBottom="@id/editText3"
+            android:id="@+id/textview1"
+            android:textColor="@color/black"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:gravity="left"
+            android:textSize="20dp"
+            android:fontFamily="@font/verdana"
+            android:text=""
+            android:layout_height="60dp"
+            android:layout_centerHorizontal="true"
+            android:layout_toRightOf="@id/editText3"
+            android:layout_alignBottom="@id/editText3"
+            android:id="@+id/textview2"
+            android:textColor="@color/black"
+            />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="52dp"
+            android:layout_height="50dp"
+            android:background="@drawable/button3"
+            android:layout_centerHorizontal="true"
+            android:text=""
+            android:fontFamily="@font/rocko"
+            android:textSize="14sp"
+            android:textColor="@color/blue4"
+            android:layout_below="@id/editText3"
+            android:id="@+id/button1"
+            />
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="52dp"
+            android:layout_height="50dp"
+            android:background="@drawable/button3"
+            android:layout_centerHorizontal="true"
+            android:text=""
+            android:fontFamily="@font/rocko"
+            android:textSize="14sp"
+            android:textColor="@color/blue4"
+            android:layout_marginLeft="5dp"
+            android:layout_below="@id/editText3"
+            android:layout_toRightOf="@id/button1"
+            android:id="@+id/button2"
             />
     </RelativeLayout>
 

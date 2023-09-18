@@ -18,7 +18,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class startUp extends AppCompatActivity {
-    private Button getStartedButton, backButton, nextButton;
+    private Button getStartedButton, backButton, nextButton, button1, button2;
     private Vibrator vibrator;
     private ImageView[] surveyQ = new ImageView[4];
 
@@ -26,7 +26,9 @@ public class startUp extends AppCompatActivity {
     private int surveyQNum = 0;
     private boolean survey = false;
 
-    private TextView startUpName, questionText,messageText;
+    private boolean height = false;
+
+    private TextView startUpName, questionText,messageText, textView1, textView2;
     private EditText editText1, editText2, editText3, editText4;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,6 +104,57 @@ public class startUp extends AppCompatActivity {
         editText2 = findViewById(R.id.editText2);
         editText3 = findViewById(R.id.editText3);
         editText4 = findViewById(R.id.editText4);
+        button1 = findViewById(R.id.button1);
+        button2 = findViewById(R.id.button2);
+        textView1 = findViewById(R.id.textview1);
+        textView2 = findViewById(R.id.textview2);
+        button1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                button1.setBackground(getResources().getDrawable(R.drawable.button2));
+                button2.setBackground(getResources().getDrawable(R.drawable.button3));
+                if(height){
+                    textView1.setText("ft");
+                    textView2.setText("in");
+                    editText3.setX(editText1.getX() +  editText1.getWidth()/30);
+                    editText4.setX(editText1.getX() + editText1.getWidth() - editText4.getWidth() - editText1.getWidth()/30);
+                    button1.setX(editText3.getX() + editText3.getWidth() - button1.getWidth());
+                    button2.setX(editText4.getX());
+                    editText3.setVisibility(View.VISIBLE);
+                    editText4.setVisibility(View.VISIBLE);
+                    textView1.setVisibility(View.VISIBLE);
+                    textView2.setVisibility(View.VISIBLE);
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            textView1.setX(editText3.getX() + editText3.getWidth() - textView1.getWidth());
+                            textView2.setX(editText4.getX() + editText4.getWidth() - textView2.getWidth());
+                        }
+                    }, 1);
+                }
+            }
+        });
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                button1.setBackground(getResources().getDrawable(R.drawable.button3));
+                button2.setBackground(getResources().getDrawable(R.drawable.button2));
+                if(height){
+                    editText3.setVisibility(View.VISIBLE);
+                    textView1.setVisibility(View.VISIBLE);
+                    editText3.setX(editText1.getX() + editText1.getWidth()/2 - editText4.getWidth()/2);
+                    button1.setX(editText3.getX() + editText3.getWidth() - button1.getWidth());
+                    button2.setX(editText4.getX());
+                    textView1.setText("cm");
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            textView1.setX(editText3.getX() + editText3.getWidth() - textView1.getWidth());
+                        }
+                    }, 1);
+                }
+            }
+        });
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -151,8 +204,8 @@ public class startUp extends AppCompatActivity {
     }
 
     private void updateProgress(){
-        questionText.setText(""); messageText.setText(""); editText1.setText(""); editText2.setText(""); editText3.setText(""); editText4.setText("");
-        editText1.setVisibility(View.INVISIBLE); editText2.setVisibility(View.INVISIBLE); editText3.setVisibility(View.INVISIBLE); editText4.setVisibility(View.INVISIBLE);
+        questionText.setText(""); messageText.setText(""); editText1.setText(""); editText2.setText(""); editText3.setText(""); editText4.setText(""); textView1.setText(""); textView2.setText("");
+        editText1.setVisibility(View.INVISIBLE); editText2.setVisibility(View.INVISIBLE); editText3.setVisibility(View.INVISIBLE); editText4.setVisibility(View.INVISIBLE); textView1.setVisibility(View.INVISIBLE); textView2.setVisibility(View.INVISIBLE); button1.setVisibility(View.INVISIBLE); button2.setVisibility(View.INVISIBLE);
         for(int i = 0; i < 4; i++){
             if(i <= surveyQNum){
                 surveyQ[i].setImageResource(R.drawable.greenrect);
@@ -169,18 +222,41 @@ public class startUp extends AppCompatActivity {
             editText1.setHint("First Name");
             editText2.setHint("Last Name");
         } else if (surveyQNum == 1){
+            height = true;
+            button1.setBackground(getResources().getDrawable(R.drawable.button2));
+            button2.setBackground(getResources().getDrawable(R.drawable.button3));
+            button1.setVisibility(View.VISIBLE);
+            button2.setVisibility(View.VISIBLE);
+            button1.setText("Ft/In");
+            button2.setText("Cm");
             questionText.setText("What's your height?");
             messageText.setText("");
+
             editText3.setX(editText1.getX() +  editText1.getWidth()/30);
+            editText4.setX(editText1.getX() + editText1.getWidth() - editText4.getWidth() - editText1.getWidth()/30);
+            button1.setX(editText3.getX() + editText3.getWidth() - button1.getWidth());
+            button2.setX(editText4.getX());
             editText3.setVisibility(View.VISIBLE);
             editText4.setVisibility(View.VISIBLE);
-            editText4.setX(editText1.getX() + editText1.getWidth() - editText4.getWidth() - editText1.getWidth()/30);
+            textView1.setVisibility(View.VISIBLE);
+            textView2.setVisibility(View.VISIBLE);
+            textView1.setText("ft");
+            textView2.setText("in");
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    textView1.setX(editText3.getX() + editText3.getWidth() - textView1.getWidth());
+                    textView2.setX(editText4.getX() + editText4.getWidth() - textView2.getWidth());
+                }
+            }, 1);
         } else if (surveyQNum == 2){
+            height = false;
             questionText.setText("What's your weight?");
             messageText.setText("Great, almost done!");
             editText3.setVisibility(View.VISIBLE);
             editText3.setX(editText1.getX() + editText1.getWidth()/2 - editText4.getWidth()/2);
         } else if (surveyQNum == 3){
+            height = false;
             questionText.setText("What's your goal weight?");
             messageText.setText("");
             editText3.setVisibility(View.VISIBLE);
