@@ -3,15 +3,16 @@ package com.example.workoutapp;
 import androidx.annotation.ColorRes;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Vibrator;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.TranslateAnimation;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -19,13 +20,14 @@ import android.widget.TextView;
 public class startUp extends AppCompatActivity {
     private Button getStartedButton, backButton, nextButton;
     private Vibrator vibrator;
-    private ImageView[] surveyQ = new ImageView[5];
+    private ImageView[] surveyQ = new ImageView[4];
 
     private RelativeLayout getStartedLayout, surveyLayout;
-    private int surveryQ = 0;
+    private int surveyQNum = 0;
     private boolean survey = false;
 
-    private TextView startUpName;
+    private TextView startUpName, questionText,messageText;
+    private EditText editText1, editText2, editText3, editText4;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,10 +46,10 @@ public class startUp extends AppCompatActivity {
                         public void run() {
                             startUpName.setText(startUpName.getText() + "" + name.charAt(finalI));
                         }
-                    }, 100*i);
+                    }, 50*i);
                 }
             }
-        }, 100);
+        }, 200);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -91,14 +93,19 @@ public class startUp extends AppCompatActivity {
         surveyQ[1] = findViewById(R.id.progress2);
         surveyQ[2] = findViewById(R.id.progress3);
         surveyQ[3] = findViewById(R.id.progress4);
-        surveyQ[4] = findViewById(R.id.progress5);
         backButton = findViewById(R.id.backButton);
 
         surveyLayout = findViewById(R.id.surveyLayout);
+        questionText = findViewById(R.id.questionText);
+        messageText = findViewById(R.id.messageText);
+        editText1 = findViewById(R.id.editText1);
+        editText2 = findViewById(R.id.editText2);
+        editText3 = findViewById(R.id.editText3);
+        editText4 = findViewById(R.id.editText4);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(surveryQ == 0){
+                if(surveyQNum == 0){
                     TranslateAnimation animate = new TranslateAnimation(0, surveyLayout.getWidth(), 0, 0);
                     animate.setDuration(200);
                     animate.setFillAfter(true);
@@ -114,7 +121,7 @@ public class startUp extends AppCompatActivity {
                         }
                     }, 1);
                 } else {
-                    surveryQ--;
+                    surveyQNum--;
                     updateProgress();
                 }
             }
@@ -122,10 +129,10 @@ public class startUp extends AppCompatActivity {
         nextButton = findViewById(R.id.nextButton);
         nextButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if(surveryQ == 4){
+                if(surveyQNum == 4){
                     // todo
                 } else {
-                    surveryQ++;
+                    surveyQNum++;
                     updateProgress();
                 }
             }
@@ -144,23 +151,63 @@ public class startUp extends AppCompatActivity {
     }
 
     private void updateProgress(){
-        for(int i = 0; i < 5; i++){
-            if(i <= surveryQ){
+        questionText.setText(""); messageText.setText(""); editText1.setText(""); editText2.setText(""); editText3.setText(""); editText4.setText("");
+        editText1.setVisibility(View.INVISIBLE); editText2.setVisibility(View.INVISIBLE); editText3.setVisibility(View.INVISIBLE); editText4.setVisibility(View.INVISIBLE);
+        for(int i = 0; i < 4; i++){
+            if(i <= surveyQNum){
                 surveyQ[i].setImageResource(R.drawable.greenrect);
             }
             else{
                 surveyQ[i].setImageResource(R.drawable.beigerect);
             }
         }
+        if(surveyQNum == 0){
+            questionText.setText("What's your name?");
+            messageText.setText("We'll use this to personalize your experience.");
+            editText1.setVisibility(View.VISIBLE);
+            editText2.setVisibility(View.VISIBLE);
+            editText1.setHint("First Name");
+            editText2.setHint("Last Name");
+        } else if (surveyQNum == 1){
+            questionText.setText("What's your height?");
+            messageText.setText("");
+            editText3.setX(editText1.getX() +  editText1.getWidth()/30);
+            editText3.setVisibility(View.VISIBLE);
+            editText4.setVisibility(View.VISIBLE);
+            editText4.setX(editText1.getX() + editText1.getWidth() - editText4.getWidth() - editText1.getWidth()/30);
+        } else if (surveyQNum == 2){
+            questionText.setText("What's your weight?");
+            messageText.setText("Great, almost done!");
+            editText3.setVisibility(View.VISIBLE);
+            editText3.setX(editText1.getX() + editText1.getWidth()/2 - editText4.getWidth()/2);
+        } else if (surveyQNum == 3){
+            questionText.setText("What's your goal weight?");
+            messageText.setText("");
+            editText3.setVisibility(View.VISIBLE);
+            editText3.setX(editText1.getX() + editText1.getWidth()/2 - editText4.getWidth()/2);
+        }
     }
 
     @Override
     public void onBackPressed() {
         if(survey){
-            if(surveryQ == 0){
+            if(surveyQNum == 0){
+                TranslateAnimation animate = new TranslateAnimation(0, surveyLayout.getWidth(), 0, 0);
+                animate.setDuration(200);
+                animate.setFillAfter(true);
+                surveyLayout.startAnimation(animate);
                 switchToGetStarted();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        TranslateAnimation animate = new TranslateAnimation(-getStartedLayout.getWidth(), 0, 0, 0);
+                        animate.setDuration(200);
+                        animate.setFillAfter(true);
+                        getStartedLayout.startAnimation(animate);
+                    }
+                }, 1);
             } else {
-                surveryQ--;
+                surveyQNum--;
                 updateProgress();
             }
         } else {

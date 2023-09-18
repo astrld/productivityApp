@@ -21,45 +21,37 @@
         android:translationZ="10dp"
         android:src="@drawable/leftarrow"
         />
+    <!-- distance between each children -->
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_marginTop="18.5dp"
+        android:translationZ="20dp"
+        android:layout_height="5dp">
+        <ImageView
+            android:layout_width="70dp"
+            android:layout_height="5dp"
+            android:layout_marginLeft="70dp"
+            android:src="@drawable/beigerect"
+            android:id="@+id/progress1"/>
 
-    <ImageView
-        android:layout_width="60dp"
-        android:layout_height="5dp"
-        android:layout_marginLeft="70dp"
-        android:layout_marginTop="18.5dp"
-        android:src="@drawable/beigerect"
-        android:id="@+id/progress1"/>
+        <ImageView
+            android:layout_width="70dp"
+            android:layout_height="5dp"
+            android:src="@drawable/beigerect"
+            android:id="@+id/progress2"/>
+        <ImageView
+            android:layout_width="70dp"
+            android:layout_height="5dp"
+            android:src="@drawable/beigerect"
+            android:id="@+id/progress3"/>
 
-    <ImageView
-        android:layout_width="60dp"
-        android:layout_height="5dp"
-        android:layout_marginLeft="130dp"
-        android:layout_marginTop="18.5dp"
-        android:src="@drawable/beigerect"
-        android:id="@+id/progress2"/>
-    <ImageView
-        android:layout_width="60dp"
-        android:layout_height="5dp"
-        android:layout_marginLeft="190dp"
-        android:layout_marginTop="18.5dp"
-        android:src="@drawable/beigerect"
-        android:id="@+id/progress3"/>
+        <ImageView
+            android:layout_width="70dp"
+            android:layout_height="5dp"
+            android:src="@drawable/beigerect"
+            android:id="@+id/progress4"/>
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
-    <ImageView
-        android:layout_width="60dp"
-        android:layout_height="5dp"
-        android:layout_marginLeft="250dp"
-        android:layout_marginTop="18.5dp"
-        android:src="@drawable/beigerect"
-        android:id="@+id/progress4"/>
-
-    <ImageView
-        android:layout_width="60dp"
-        android:layout_height="5dp"
-        android:layout_marginLeft="310dp"
-        android:layout_marginTop="18.5dp"
-        android:src="@drawable/beigerect"
-        android:id="@+id/progress5"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -72,12 +64,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="15dp"
             android:layout_marginEnd="5dp"
             android:layout_marginBottom="5dp"
             android:fontFamily="@font/verdana"
             android:gravity="center"
-            android:text="Let's get to know you better!"
+            android:text=""
             android:textColor="@color/black"
             android:textSize="16dp"
             android:textStyle="bold"
@@ -87,10 +79,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
-            android:text="What's your name?"
+            android:text=""
             android:fontFamily="@font/verdana"
             android:textStyle="bold"
-            android:textSize="36dp"
+            android:textSize="30dp"
             android:gravity="center"
             android:textColor="@color/black"
             android:id="@+id/questionText"
@@ -114,13 +106,42 @@
             android:layout_width="300dp"
             android:layout_height="60dp"
             android:layout_centerHorizontal="true"
-            android:hint="First Name"
+            android:hint=""
             android:fontFamily="@font/verdana"
             android:textSize="32sp"
             android:textColorHint="#7A7A7A"
             android:layout_centerVertical="true"
             android:textColor="@color/blue4"
             android:id="@+id/editText1"
+            android:backgroundTint="@color/blue4"
+            android:textStyle="bold"
+            />
+
+        <EditText
+            android:layout_width="125dp"
+            android:layout_height="100dp"
+            android:layout_centerHorizontal="true"
+            android:fontFamily="@font/verdana"
+            android:textSize="48sp"
+            android:textColorHint="#7A7A7A"
+            android:layout_centerVertical="true"
+            android:textColor="@color/blue4"
+            android:id="@+id/editText3"
+            android:backgroundTint="@color/blue4"
+            android:textStyle="bold"
+            />
+
+        <EditText
+            android:layout_width="125dp"
+            android:layout_height="100dp"
+            android:layout_centerHorizontal="true"
+            android:fontFamily="@font/verdana"
+            android:textSize="48sp"
+            android:textColorHint="#7A7A7A"
+            android:layout_centerVertical="true"
+            android:textColor="@color/blue4"
+            android:id="@+id/editText4"
+            android:backgroundTint="@color/blue4"
             android:textStyle="bold"
             />
 
@@ -128,7 +149,7 @@
             android:layout_width="300dp"
             android:layout_height="60dp"
             android:layout_centerHorizontal="true"
-            android:hint="Last Name"
+            android:hint=""
             android:fontFamily="@font/verdana"
             android:textSize="32sp"
             android:textColorHint="#7A7A7A"
@@ -136,6 +157,7 @@
             android:layout_below="@id/editText1"
             android:textColor="@color/blue4"
             android:id="@+id/editText2"
+            android:backgroundTint="@color/blue4"
             android:textStyle="bold"
             />
     </RelativeLayout>
