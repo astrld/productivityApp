@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/getStartedLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/backgroundImageView"
+        android:layout_width="match_parent"
+        android:scaleX="1.05"
+        android:layout_height="match_parent"
+        android:src="@drawable/gsbg"
+        android:scaleType="centerCrop" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/semi_transparent_background_color" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="fit-track"
+        android:textColor="@color/white"
+        android:textSize="120sp"
+        android:gravity="center"
+        android:layout_marginTop="-550dp"
+        android:fontFamily="@font/bearley"
+        />
+
+    <!-- rounded corners -->
+    <androidx.appcompat.widget.AppCompatButton
+        android:background="@drawable/button1"
+        android:id="@+id/btnGetStarted"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="650dp"
+        android:width="300dp"
+        android:height="50dp"
+        android:fontFamily="@font/rocko"
+        android:textStyle=""
+        android:textSize="26sp"
+        android:textColor="@color/white"
+        android:text="Get Started" />
+
+
+</RelativeLayout>

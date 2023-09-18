@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="@color/beige"
+    android:id="@+id/surveyLayout"
+    android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:background="@drawable/backarrow"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="10dp"
+        android:id="@+id/backButton"/>
+
+    <ImageView
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="10dp"
+        android:translationZ="10dp"
+        android:src="@drawable/leftarrow"
+        />
+
+    <ImageView
+        android:layout_width="60dp"
+        android:layout_height="5dp"
+        android:layout_marginLeft="70dp"
+        android:layout_marginTop="18.5dp"
+        android:src="@drawable/beigerect"
+        android:id="@+id/progress1"/>
+
+    <ImageView
+        android:layout_width="60dp"
+        android:layout_height="5dp"
+        android:layout_marginLeft="130dp"
+        android:layout_marginTop="18.5dp"
+        android:src="@drawable/beigerect"
+        android:id="@+id/progress2"/>
+    <ImageView
+        android:layout_width="60dp"
+        android:layout_height="5dp"
+        android:layout_marginLeft="190dp"
+        android:layout_marginTop="18.5dp"
+        android:src="@drawable/beigerect"
+        android:id="@+id/progress3"/>
+
+    <ImageView
+        android:layout_width="60dp"
+        android:layout_height="5dp"
+        android:layout_marginLeft="250dp"
+        android:layout_marginTop="18.5dp"
+        android:src="@drawable/beigerect"
+        android:id="@+id/progress4"/>
+
+    <ImageView
+        android:layout_width="60dp"
+        android:layout_height="5dp"
+        android:layout_marginLeft="310dp"
+        android:layout_marginTop="18.5dp"
+        android:src="@drawable/beigerect"
+        android:id="@+id/progress5"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_marginTop="37dp"
+        android:orientation="vertical"
+        android:id="@+id/linearLayoutCompat"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="5dp"
+            android:fontFamily="@font/verdana"
+            android:gravity="center"
+            android:text="Let's get to know you better!"
+            android:textColor="@color/black"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            android:id="@+id/messageText"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:text="What's your name?"
+            android:fontFamily="@font/verdana"
+            android:textStyle="bold"
+            android:textSize="36dp"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:id="@+id/questionText"
+            />
+        <!-- should be at bottom -->
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="300dp"
+            android:layout_height="60dp"
+            android:background="@drawable/button1"
+            android:layout_centerHorizontal="true"
+            android:text="Next"
+            android:fontFamily="@font/rocko"
+            android:textSize="32sp"
+            android:textColor="@color/white"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="20dp"
+            android:id="@+id/nextButton"
+            />
+
+        <EditText
+            android:layout_width="300dp"
+            android:layout_height="60dp"
+            android:layout_centerHorizontal="true"
+            android:hint="First Name"
+            android:fontFamily="@font/verdana"
+            android:textSize="32sp"
+            android:textColorHint="#7A7A7A"
+            android:layout_centerVertical="true"
+            android:textColor="@color/blue4"
+            android:id="@+id/editText1"
+            android:textStyle="bold"
+            />
+
+        <EditText
+            android:layout_width="300dp"
+            android:layout_height="60dp"
+            android:layout_centerHorizontal="true"
+            android:hint="Last Name"
+            android:fontFamily="@font/verdana"
+            android:textSize="32sp"
+            android:textColorHint="#7A7A7A"
+            android:layout_centerVertical="true"
+            android:layout_below="@id/editText1"
+            android:textColor="@color/blue4"
+            android:id="@+id/editText2"
+            android:textStyle="bold"
+            />
+    </RelativeLayout>
+
+</RelativeLayout>
