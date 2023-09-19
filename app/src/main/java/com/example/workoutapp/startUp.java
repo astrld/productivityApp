@@ -3,6 +3,7 @@ package com.example.workoutapp;
 import androidx.annotation.ColorRes;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Vibrator;
@@ -16,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class startUp extends AppCompatActivity {
     private Button getStartedButton, backButton, nextButton, button1, button2;
@@ -30,12 +32,15 @@ public class startUp extends AppCompatActivity {
 
     private boolean metric = false;
 
+    private DBHandler DBHandler;
+
     private TextView startUpName, questionText,messageText, textView1, textView2;
     private EditText editText1, editText2, editText3, editText4;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.startup_xml);
+        DBHandler = new DBHandler(startUp.this);
         vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
         startUpName = findViewById(R.id.startUpName);
         String name = "fit-track";
@@ -57,7 +62,11 @@ public class startUp extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                switchToGetStarted();
+                if(!DBHandler.allFilled()){
+                    switchToGetStarted();
+                } else {
+                    changeToMain();
+                }
             }
         }, 1000);
     }
@@ -92,6 +101,7 @@ public class startUp extends AppCompatActivity {
     private void codeForSurvey(){
         setContentView(R.layout.survey);
         setStatusBarColor(R.color.beige);
+        System.out.println("First Name: " + DBHandler.getFirstName() + "\nLast Name: " + DBHandler.getLastName() + "\nHeight: " + DBHandler.getHeight() + "\nHeight Metric: " + DBHandler.getHeightMetric() + "\nWeight: " + DBHandler.getWeight() + "\nWeight Metric: " + DBHandler.getWeightMetric() + "\nGoal Weight: " + DBHandler.getGoalWeight() + "\nGoal Weight Metric: " + DBHandler.getGoalWeightMetric());
         survey = true;
         surveyQ[0] = findViewById(R.id.progress1);
         surveyQ[1] = findViewById(R.id.progress2);
@@ -113,18 +123,25 @@ public class startUp extends AppCompatActivity {
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                if(metric && !editText3.getText().toString().equals("")){
-                    int cm = Integer.parseInt(editText3.getText().toString());
-                    int feet = (int) (cm/30.48);
-                    int inches = (int) ((cm - feet*30.48)/2.54);
-                    editText3.setText(feet + "");
-                    editText4.setText(inches + "");
+                if(!metric){
+                    return;
                 }
-                metric = false;
+                vibrator.vibrate((long) 2.5);
                 button1.setBackground(getResources().getDrawable(R.drawable.button2));
                 button2.setBackground(getResources().getDrawable(R.drawable.button3));
                 if(height){
+                    textView1.setVisibility(View.INVISIBLE);
+                    textView2.setVisibility(View.INVISIBLE);
+                    if(metric && !editText3.getText().toString().equals("")){
+                        int cm = Integer.parseInt(editText3.getText().toString());
+                        int feet = (int) (cm/30.48);
+                        int inches = (int) ((cm - feet*30.48)/2.54 + 0.5);
+                        editText3.setText(feet + "");
+                        editText4.setText(inches + "");
+                        System.out.println(cm + "cm");
+                        System.out.println(feet + "ft  " + inches);
+                    }
+                    metric = false;
                     textView1.setText("ft");
                     textView2.setText("in");
                     editText3.setX(editText1.getX() +  editText1.getWidth()/30);
@@ -133,13 +150,32 @@ public class startUp extends AppCompatActivity {
                     button2.setX(editText4.getX());
                     editText3.setVisibility(View.VISIBLE);
                     editText4.setVisibility(View.VISIBLE);
-                    textView1.setVisibility(View.VISIBLE);
-                    textView2.setVisibility(View.VISIBLE);
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             textView1.setX(editText3.getX() + editText3.getWidth() - textView1.getWidth());
                             textView2.setX(editText4.getX() + editText4.getWidth() - textView2.getWidth());
+                            textView1.setVisibility(View.VISIBLE);
+                            textView2.setVisibility(View.VISIBLE);
+                        }
+                    }, 1);
+                } else {
+                    textView1.setVisibility(View.INVISIBLE);
+                    if(metric && !editText3.getText().toString().equals("")){
+                        int kg = Integer.parseInt(editText3.getText().toString());
+                        int lbs = (int) (kg*2.205 + 0.5);
+                        editText3.setText(lbs + "");
+                    }
+                    metric = false;
+                    textView1.setText("lbs");
+                    editText3.setX(editText1.getX() + editText1.getWidth()/2 - editText4.getWidth()/2);
+                    button1.setX(editText3.getX());
+                    button2.setX(editText3.getX() + editText3.getWidth() - button2.getWidth());
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            textView1.setX(editText3.getX() + editText3.getWidth() - textView1.getWidth() + 15);
+                            textView1.setVisibility(View.VISIBLE);
                         }
                     }, 1);
                 }
@@ -148,23 +184,26 @@ public class startUp extends AppCompatActivity {
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!metric && !editText3.getText().toString().equals("") && !editText4.getText().toString().equals("")){
-                    int feet = Integer.parseInt(editText3.getText().toString());
-                    int inches = Integer.parseInt(editText4.getText().toString());
-                    int cm = (int) (feet*30.48 + inches*2.54);
-                    System.out.println(cm);
-                    editText3.setText(cm + "");
-                    editText4.setText("");
+                if(metric){
+                    return;
                 }
-                metric = true;
-                textView1.setText(""); textView2.setText("");
-                textView2.setVisibility(View.INVISIBLE);
-                editText4.setVisibility(View.INVISIBLE);
+                vibrator.vibrate((long) 2.5);
                 button1.setBackground(getResources().getDrawable(R.drawable.button3));
                 button2.setBackground(getResources().getDrawable(R.drawable.button2));
                 if(height){
+                    textView1.setVisibility(View.INVISIBLE);
+                    textView2.setVisibility(View.INVISIBLE);
+                    if(!metric && !editText3.getText().toString().equals("") && !editText4.getText().toString().equals("")){
+                        int feet = Integer.parseInt(editText3.getText().toString());
+                        int inches = Integer.parseInt(editText4.getText().toString());
+                        int cm = (int) (feet*30.48 + inches*2.54 );
+                        editText3.setText(cm + "");
+                        editText4.setText("");
+                    }
+                    metric = true;
+                    textView1.setText(""); textView2.setText("");
+                    editText4.setVisibility(View.INVISIBLE);
                     editText3.setVisibility(View.VISIBLE);
-                    textView1.setVisibility(View.VISIBLE);
                     editText3.setX(editText1.getX() + editText1.getWidth()/2 - editText4.getWidth()/2);
                     button1.setX(editText3.getX());
                     button2.setX(editText3.getX() + editText3.getWidth() - button2.getWidth());
@@ -173,6 +212,26 @@ public class startUp extends AppCompatActivity {
                         @Override
                         public void run() {
                             textView1.setX(editText3.getX() + editText3.getWidth() - textView1.getWidth() + 15);
+                            textView1.setVisibility(View.VISIBLE);
+                        }
+                    }, 1);
+                } else {
+                    textView1.setVisibility(View.INVISIBLE);
+                    if(!metric && !editText3.getText().toString().equals("")){
+                        int lbs = Integer.parseInt(editText3.getText().toString());
+                        int kg = (int) (lbs/2.205 + 0.5);
+                        editText3.setText(kg + "");
+                    }
+                    metric = true;
+                    textView1.setText("kg");
+                    editText3.setX(editText1.getX() + editText1.getWidth()/2 - editText4.getWidth()/2);
+                    button1.setX(editText3.getX());
+                    button2.setX(editText3.getX() + editText3.getWidth() - button2.getWidth());
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            textView1.setX(editText3.getX() + editText3.getWidth() - textView1.getWidth() + 15);
+                            textView1.setVisibility(View.VISIBLE);
                         }
                     }, 1);
                 }
@@ -205,12 +264,45 @@ public class startUp extends AppCompatActivity {
         nextButton = findViewById(R.id.nextButton);
         nextButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if(surveyQNum == 4){
-                    // todo
-                } else {
-                    surveyQNum++;
-                    updateProgress();
+                if(surveyQNum == 0) {
+                    if(editText1.getText().toString().equals("") || editText2.getText().toString().equals("")){
+                        Toast.makeText(getApplicationContext(), "Please enter your name", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    if(DBHandler.checkEmpty()) {
+                        DBHandler.addData(editText1.getText().toString(), editText2.getText().toString(), "", "", "", "", "", "");
+                    } else {
+                        DBHandler.updateData(editText1.getText().toString(), editText2.getText().toString(), DBHandler.getHeight(), DBHandler.getHeightMetric(), DBHandler.getWeight(), DBHandler.getWeightMetric(), DBHandler.getGoalWeight(), DBHandler.getGoalWeightMetric());
+                    }
+                } else if(surveyQNum == 1){
+                    if((editText3.getText().toString().equals("") || editText4.getText().toString().equals("") && !metric) || (editText3.getText().toString().equals("") && metric)){
+                        Toast.makeText(getApplicationContext(), "Please enter your height", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    if(metric) {
+                        DBHandler.updateData(DBHandler.getFirstName(), DBHandler.getLastName(), editText3.getText().toString(), metric + "", DBHandler.getWeight(), DBHandler.getWeightMetric(), DBHandler.getGoalWeight(), DBHandler.getGoalWeightMetric());
+                    } else {
+                        int inches = Integer.parseInt(editText4.getText().toString()) + Integer.parseInt(editText3.getText().toString())*12;
+                        DBHandler.updateData(DBHandler.getFirstName(), DBHandler.getLastName(), inches + "", metric + "", DBHandler.getWeight(), DBHandler.getWeightMetric(), DBHandler.getGoalWeight(), DBHandler.getGoalWeightMetric());
+                    }
+                } else if(surveyQNum == 2){
+                    if(editText3.getText().toString().equals("")){
+                        Toast.makeText(getApplicationContext(), "Please enter your weight", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    System.out.println("Weight is CURRENTLY " + DBHandler.getWeight() + " and is changing to " + editText3.getText().toString());
+                    DBHandler.updateData(DBHandler.getFirstName(), DBHandler.getLastName(), DBHandler.getHeight(), DBHandler.getHeightMetric(), editText3.getText().toString(), metric + "", DBHandler.getGoalWeight(), DBHandler.getGoalWeightMetric());
+                } else if(surveyQNum == 3){
+                    if(editText3.getText().toString().equals("")){
+                        Toast.makeText(getApplicationContext(), "Please enter your goal weight", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    System.out.println("Goal Weight is changing");
+                    DBHandler.updateData(DBHandler.getFirstName(), DBHandler.getLastName(), DBHandler.getHeight(), DBHandler.getHeightMetric(), DBHandler.getWeight(), DBHandler.getWeightMetric(), editText3.getText().toString(), metric + "");
+                    changeToMain();
                 }
+                surveyQNum++;
+                updateProgress();
             }
         });
         updateProgress();
@@ -237,6 +329,7 @@ public class startUp extends AppCompatActivity {
                 surveyQ[i].setImageResource(R.drawable.beigerect);
             }
         }
+        metric = false;
         if(surveyQNum == 0){
             questionText.setText("What's your name?");
             messageText.setText("We'll use this to personalize your experience.");
@@ -244,6 +337,10 @@ public class startUp extends AppCompatActivity {
             editText2.setVisibility(View.VISIBLE);
             editText1.setHint("First Name");
             editText2.setHint("Last Name");
+            if(!DBHandler.checkEmpty()){
+                editText1.setText(DBHandler.getFirstName());
+                editText2.setText(DBHandler.getLastName());
+            }
         } else if (surveyQNum == 1){
             height = true;
             button1.setBackground(getResources().getDrawable(R.drawable.button2));
@@ -265,7 +362,6 @@ public class startUp extends AppCompatActivity {
             textView2.setVisibility(View.VISIBLE);
             textView1.setText("ft");
             textView2.setText("in");
-            metric = false;
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -273,18 +369,125 @@ public class startUp extends AppCompatActivity {
                     textView2.setX(editText4.getX() + editText4.getWidth() - textView2.getWidth());
                 }
             }, 1);
+            if(!DBHandler.checkEmpty() && !DBHandler.getHeight().equals("")){
+                if(DBHandler.getHeightMetric().equals("true")){
+                    metric = true;
+                    button1.setBackground(getResources().getDrawable(R.drawable.button3));
+                    button2.setBackground(getResources().getDrawable(R.drawable.button2));
+                    textView1.setVisibility(View.INVISIBLE);
+                    textView2.setVisibility(View.INVISIBLE);
+                    editText4.setVisibility(View.INVISIBLE);
+                    editText3.setVisibility(View.VISIBLE);
+                    editText3.setX(editText1.getX() + editText1.getWidth()/2 - editText4.getWidth()/2);
+                    button1.setX(editText3.getX());
+                    button2.setX(editText3.getX() + editText3.getWidth() - button2.getWidth());
+                    textView1.setText("cm");
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            textView1.setX(editText3.getX() + editText3.getWidth() - textView1.getWidth() + 15);
+                            textView1.setVisibility(View.VISIBLE);
+                        }
+                    }, 1);
+                    editText3.setText(DBHandler.getHeight());
+                } else {
+                    metric = false;
+                    editText3.setText(DBHandler.getHeight());
+                    int inches = Integer.parseInt(DBHandler.getHeight());
+                    int feet = (int) (inches/12);
+                    inches = inches - feet*12;
+                    editText3.setText(feet + "");
+                    editText4.setText(inches + "");
+                }
+            }
         } else if (surveyQNum == 2){
+            button1.setVisibility(View.VISIBLE); button2.setVisibility(View.VISIBLE);
+            button1.setBackground(getResources().getDrawable(R.drawable.button2));
+            button2.setBackground(getResources().getDrawable(R.drawable.button3));
             height = false;
             questionText.setText("What's your weight?");
             messageText.setText("Great, almost done!");
             editText3.setVisibility(View.VISIBLE);
             editText3.setX(editText1.getX() + editText1.getWidth()/2 - editText4.getWidth()/2);
+            button1.setX(editText3.getX());
+            button2.setX(editText3.getX() + editText3.getWidth() - button2.getWidth());
+            button1.setText("Lbs");
+            button2.setText("Kg");
+            textView1.setText("lbs");
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    textView1.setX(editText3.getX() + editText3.getWidth() - textView1.getWidth() + 15);
+                    textView1.setVisibility(View.VISIBLE);
+                }
+            }, 1);
+            if(!DBHandler.checkEmpty() && !DBHandler.getWeight().equals("")){
+                if(DBHandler.getWeightMetric().equals("true")){
+                    metric = true;
+                    button1.setBackground(getResources().getDrawable(R.drawable.button3));
+                    button2.setBackground(getResources().getDrawable(R.drawable.button2));
+                    textView1.setVisibility(View.INVISIBLE);
+                    editText3.setVisibility(View.VISIBLE);
+                    editText3.setX(editText1.getX() + editText1.getWidth()/2 - editText4.getWidth()/2);
+                    button1.setX(editText3.getX());
+                    button2.setX(editText3.getX() + editText3.getWidth() - button2.getWidth());
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            textView1.setX(editText3.getX() + editText3.getWidth() - textView1.getWidth() + 15);
+                            textView1.setVisibility(View.VISIBLE);
+                        }
+                    }, 1);
+                    editText3.setText(DBHandler.getWeight());
+                } else {
+                    metric = false;
+                    editText3.setText(DBHandler.getWeight());
+                }
+            }
         } else if (surveyQNum == 3){
+            button1.setVisibility(View.VISIBLE); button2.setVisibility(View.VISIBLE);
+            button1.setBackground(getResources().getDrawable(R.drawable.button2));
+            button2.setBackground(getResources().getDrawable(R.drawable.button3));
             height = false;
             questionText.setText("What's your goal weight?");
             messageText.setText("");
             editText3.setVisibility(View.VISIBLE);
             editText3.setX(editText1.getX() + editText1.getWidth()/2 - editText4.getWidth()/2);
+            button1.setX(editText3.getX());
+            button2.setX(editText3.getX() + editText3.getWidth() - button2.getWidth());
+            button1.setText("Lbs");
+            button2.setText("Kg");
+            textView1.setText("lbs");
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    textView1.setX(editText3.getX() + editText3.getWidth() - textView1.getWidth() + 15);
+                    textView1.setVisibility(View.VISIBLE);
+                }
+            }, 1);
+            if(!DBHandler.checkEmpty() && !DBHandler.getGoalWeight().equals("")){
+                if(DBHandler.getGoalWeightMetric().equals("true")){
+                    metric = true;
+                    button1.setBackground(getResources().getDrawable(R.drawable.button3));
+                    button2.setBackground(getResources().getDrawable(R.drawable.button2));
+                    textView1.setVisibility(View.INVISIBLE);
+                    editText3.setVisibility(View.VISIBLE);
+                    editText3.setX(editText1.getX() + editText1.getWidth()/2 - editText4.getWidth()/2);
+                    button1.setX(editText3.getX());
+                    button2.setX(editText3.getX() + editText3.getWidth() - button2.getWidth());
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            textView1.setX(editText3.getX() + editText3.getWidth() - textView1.getWidth() + 15);
+                            textView1.setVisibility(View.VISIBLE);
+                        }
+                    }, 1);
+                    editText3.setText(DBHandler.getGoalWeight());
+                } else {
+                    metric = false;
+                    editText3.setText(DBHandler.getGoalWeight());
+                }
+            }
         }
     }
 
@@ -313,6 +516,12 @@ public class startUp extends AppCompatActivity {
         } else {
             super.onBackPressed();
         }
+    }
+
+    public void changeToMain(){
+        // new intent to switch to main
+        Intent intent = new Intent(this, main.class);
+        startActivity(intent);
     }
 
 
