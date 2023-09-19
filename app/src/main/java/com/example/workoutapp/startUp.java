@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Vibrator;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -32,7 +31,7 @@ public class startUp extends AppCompatActivity {
 
     private boolean metric = false;
 
-    private DBHandler DBHandler;
+    private DBHandler dbHandler;
 
     private TextView startUpName, questionText,messageText, textView1, textView2;
     private EditText editText1, editText2, editText3, editText4;
@@ -40,7 +39,8 @@ public class startUp extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.startup_xml);
-        DBHandler = new DBHandler(startUp.this);
+        dbHandler = new DBHandler(startUp.this);
+        Database.setDBHandler(dbHandler);
         vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
         startUpName = findViewById(R.id.startUpName);
         String name = "fit-track";
@@ -62,7 +62,7 @@ public class startUp extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                if(!DBHandler.allFilled()){
+                if(!dbHandler.allFilled()){
                     switchToGetStarted();
                 } else {
                     changeToMain();
@@ -101,7 +101,7 @@ public class startUp extends AppCompatActivity {
     private void codeForSurvey(){
         setContentView(R.layout.survey);
         setStatusBarColor(R.color.beige);
-        System.out.println("First Name: " + DBHandler.getFirstName() + "\nLast Name: " + DBHandler.getLastName() + "\nHeight: " + DBHandler.getHeight() + "\nHeight Metric: " + DBHandler.getHeightMetric() + "\nWeight: " + DBHandler.getWeight() + "\nWeight Metric: " + DBHandler.getWeightMetric() + "\nGoal Weight: " + DBHandler.getGoalWeight() + "\nGoal Weight Metric: " + DBHandler.getGoalWeightMetric());
+        System.out.println("First Name: " + dbHandler.getFirstName() + "\nLast Name: " + dbHandler.getLastName() + "\nHeight: " + dbHandler.getHeight() + "\nHeight Metric: " + dbHandler.getHeightMetric() + "\nWeight: " + dbHandler.getWeight() + "\nWeight Metric: " + dbHandler.getWeightMetric() + "\nGoal Weight: " + dbHandler.getGoalWeight() + "\nGoal Weight Metric: " + dbHandler.getGoalWeightMetric());
         survey = true;
         surveyQ[0] = findViewById(R.id.progress1);
         surveyQ[1] = findViewById(R.id.progress2);
@@ -269,10 +269,10 @@ public class startUp extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), "Please enter your name", Toast.LENGTH_SHORT).show();
                         return;
                     }
-                    if(DBHandler.checkEmpty()) {
-                        DBHandler.addData(editText1.getText().toString(), editText2.getText().toString(), "", "", "", "", "", "");
+                    if(dbHandler.checkEmpty()) {
+                        dbHandler.addData(editText1.getText().toString(), editText2.getText().toString(), "", "", "", "", "", "");
                     } else {
-                        DBHandler.updateData(editText1.getText().toString(), editText2.getText().toString(), DBHandler.getHeight(), DBHandler.getHeightMetric(), DBHandler.getWeight(), DBHandler.getWeightMetric(), DBHandler.getGoalWeight(), DBHandler.getGoalWeightMetric());
+                        dbHandler.updateData(editText1.getText().toString(), editText2.getText().toString(), dbHandler.getHeight(), dbHandler.getHeightMetric(), dbHandler.getWeight(), dbHandler.getWeightMetric(), dbHandler.getGoalWeight(), dbHandler.getGoalWeightMetric());
                     }
                 } else if(surveyQNum == 1){
                     if((editText3.getText().toString().equals("") || editText4.getText().toString().equals("") && !metric) || (editText3.getText().toString().equals("") && metric)){
@@ -280,25 +280,25 @@ public class startUp extends AppCompatActivity {
                         return;
                     }
                     if(metric) {
-                        DBHandler.updateData(DBHandler.getFirstName(), DBHandler.getLastName(), editText3.getText().toString(), metric + "", DBHandler.getWeight(), DBHandler.getWeightMetric(), DBHandler.getGoalWeight(), DBHandler.getGoalWeightMetric());
+                        dbHandler.updateData(dbHandler.getFirstName(), dbHandler.getLastName(), editText3.getText().toString(), metric + "", dbHandler.getWeight(), dbHandler.getWeightMetric(), dbHandler.getGoalWeight(), dbHandler.getGoalWeightMetric());
                     } else {
                         int inches = Integer.parseInt(editText4.getText().toString()) + Integer.parseInt(editText3.getText().toString())*12;
-                        DBHandler.updateData(DBHandler.getFirstName(), DBHandler.getLastName(), inches + "", metric + "", DBHandler.getWeight(), DBHandler.getWeightMetric(), DBHandler.getGoalWeight(), DBHandler.getGoalWeightMetric());
+                        dbHandler.updateData(dbHandler.getFirstName(), dbHandler.getLastName(), inches + "", metric + "", dbHandler.getWeight(), dbHandler.getWeightMetric(), dbHandler.getGoalWeight(), dbHandler.getGoalWeightMetric());
                     }
                 } else if(surveyQNum == 2){
                     if(editText3.getText().toString().equals("")){
                         Toast.makeText(getApplicationContext(), "Please enter your weight", Toast.LENGTH_SHORT).show();
                         return;
                     }
-                    System.out.println("Weight is CURRENTLY " + DBHandler.getWeight() + " and is changing to " + editText3.getText().toString());
-                    DBHandler.updateData(DBHandler.getFirstName(), DBHandler.getLastName(), DBHandler.getHeight(), DBHandler.getHeightMetric(), editText3.getText().toString(), metric + "", DBHandler.getGoalWeight(), DBHandler.getGoalWeightMetric());
+                    System.out.println("Weight is CURRENTLY " + dbHandler.getWeight() + " and is changing to " + editText3.getText().toString());
+                    dbHandler.updateData(dbHandler.getFirstName(), dbHandler.getLastName(), dbHandler.getHeight(), dbHandler.getHeightMetric(), editText3.getText().toString(), metric + "", dbHandler.getGoalWeight(), dbHandler.getGoalWeightMetric());
                 } else if(surveyQNum == 3){
                     if(editText3.getText().toString().equals("")){
                         Toast.makeText(getApplicationContext(), "Please enter your goal weight", Toast.LENGTH_SHORT).show();
                         return;
                     }
                     System.out.println("Goal Weight is changing");
-                    DBHandler.updateData(DBHandler.getFirstName(), DBHandler.getLastName(), DBHandler.getHeight(), DBHandler.getHeightMetric(), DBHandler.getWeight(), DBHandler.getWeightMetric(), editText3.getText().toString(), metric + "");
+                    dbHandler.updateData(dbHandler.getFirstName(), dbHandler.getLastName(), dbHandler.getHeight(), dbHandler.getHeightMetric(), dbHandler.getWeight(), dbHandler.getWeightMetric(), editText3.getText().toString(), metric + "");
                     changeToMain();
                 }
                 surveyQNum++;
@@ -337,9 +337,9 @@ public class startUp extends AppCompatActivity {
             editText2.setVisibility(View.VISIBLE);
             editText1.setHint("First Name");
             editText2.setHint("Last Name");
-            if(!DBHandler.checkEmpty()){
-                editText1.setText(DBHandler.getFirstName());
-                editText2.setText(DBHandler.getLastName());
+            if(!dbHandler.checkEmpty()){
+                editText1.setText(dbHandler.getFirstName());
+                editText2.setText(dbHandler.getLastName());
             }
         } else if (surveyQNum == 1){
             height = true;
@@ -369,8 +369,8 @@ public class startUp extends AppCompatActivity {
                     textView2.setX(editText4.getX() + editText4.getWidth() - textView2.getWidth());
                 }
             }, 1);
-            if(!DBHandler.checkEmpty() && !DBHandler.getHeight().equals("")){
-                if(DBHandler.getHeightMetric().equals("true")){
+            if(!dbHandler.checkEmpty() && !dbHandler.getHeight().equals("")){
+                if(dbHandler.getHeightMetric().equals("true")){
                     metric = true;
                     button1.setBackground(getResources().getDrawable(R.drawable.button3));
                     button2.setBackground(getResources().getDrawable(R.drawable.button2));
@@ -389,11 +389,11 @@ public class startUp extends AppCompatActivity {
                             textView1.setVisibility(View.VISIBLE);
                         }
                     }, 1);
-                    editText3.setText(DBHandler.getHeight());
+                    editText3.setText(dbHandler.getHeight());
                 } else {
                     metric = false;
-                    editText3.setText(DBHandler.getHeight());
-                    int inches = Integer.parseInt(DBHandler.getHeight());
+                    editText3.setText(dbHandler.getHeight());
+                    int inches = Integer.parseInt(dbHandler.getHeight());
                     int feet = (int) (inches/12);
                     inches = inches - feet*12;
                     editText3.setText(feet + "");
@@ -421,8 +421,8 @@ public class startUp extends AppCompatActivity {
                     textView1.setVisibility(View.VISIBLE);
                 }
             }, 1);
-            if(!DBHandler.checkEmpty() && !DBHandler.getWeight().equals("")){
-                if(DBHandler.getWeightMetric().equals("true")){
+            if(!dbHandler.checkEmpty() && !dbHandler.getWeight().equals("")){
+                if(dbHandler.getWeightMetric().equals("true")){
                     metric = true;
                     button1.setBackground(getResources().getDrawable(R.drawable.button3));
                     button2.setBackground(getResources().getDrawable(R.drawable.button2));
@@ -438,10 +438,10 @@ public class startUp extends AppCompatActivity {
                             textView1.setVisibility(View.VISIBLE);
                         }
                     }, 1);
-                    editText3.setText(DBHandler.getWeight());
+                    editText3.setText(dbHandler.getWeight());
                 } else {
                     metric = false;
-                    editText3.setText(DBHandler.getWeight());
+                    editText3.setText(dbHandler.getWeight());
                 }
             }
         } else if (surveyQNum == 3){
@@ -465,8 +465,8 @@ public class startUp extends AppCompatActivity {
                     textView1.setVisibility(View.VISIBLE);
                 }
             }, 1);
-            if(!DBHandler.checkEmpty() && !DBHandler.getGoalWeight().equals("")){
-                if(DBHandler.getGoalWeightMetric().equals("true")){
+            if(!dbHandler.checkEmpty() && !dbHandler.getGoalWeight().equals("")){
+                if(dbHandler.getGoalWeightMetric().equals("true")){
                     metric = true;
                     button1.setBackground(getResources().getDrawable(R.drawable.button3));
                     button2.setBackground(getResources().getDrawable(R.drawable.button2));
@@ -482,10 +482,10 @@ public class startUp extends AppCompatActivity {
                             textView1.setVisibility(View.VISIBLE);
                         }
                     }, 1);
-                    editText3.setText(DBHandler.getGoalWeight());
+                    editText3.setText(dbHandler.getGoalWeight());
                 } else {
                     metric = false;
-                    editText3.setText(DBHandler.getGoalWeight());
+                    editText3.setText(dbHandler.getGoalWeight());
                 }
             }
         }
