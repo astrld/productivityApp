@@ -23,8 +23,41 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_alignParentBottom="true"
+        android:background="@color/blue2"
+        android:orientation="horizontal"
+        android:id="@+id/bottomNav"
+        android:padding="15dp"
         android:layout_height="80dp">
-
+        <ImageView
+            android:layout_width="48sp"
+            android:layout_height="match_parent"
+            android:src="@drawable/home"
+            android:id="@+id/home"
+            />
+        <ImageView
+            android:layout_width="48sp"
+            android:layout_height="match_parent"
+            android:src="@drawable/calendar"
+            android:id="@+id/calendar"
+            />
+        <ImageView
+            android:layout_width="48sp"
+            android:layout_height="match_parent"
+            android:src="@drawable/bar_chart"
+            android:id="@+id/graph"
+            />
+        <ImageView
+            android:layout_width="48sp"
+            android:layout_height="match_parent"
+            android:src="@drawable/user"
+            android:id="@+id/profile"
+            />
+        <ImageView
+            android:layout_width="48sp"
+            android:layout_height="match_parent"
+            android:src="@drawable/setting"
+            android:id="@+id/setting"
+            />
     </LinearLayout>
 
 </RelativeLayout>

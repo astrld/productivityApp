@@ -37,7 +37,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="75dp"
         android:width="300dp"
         android:height="50dp"
         android:fontFamily="@font/rocko"
