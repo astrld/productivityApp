@@ -207,7 +207,6 @@ public class DBHandler extends SQLiteOpenHelper{
         String query = "SELECT * FROM " + TABLE_NAME;
         Cursor cursor = db.rawQuery(query, null);
         if (cursor.moveToFirst()) {
-            // if 0,1,2,3,4,5,6,7 are not empty or ""
             if(!cursor.getString(0).equals("") && !cursor.getString(1).equals("") && !cursor.getString(2).equals("") && !cursor.getString(3).equals("") && !cursor.getString(4).equals("") && !cursor.getString(5).equals("") && !cursor.getString(6).equals("") && !cursor.getString(7).equals("")){
                 cursor.close();
                 return true;
