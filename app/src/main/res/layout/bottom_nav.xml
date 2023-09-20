@@ -9,7 +9,7 @@
     <ImageView
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:src="@drawable/home"
+        android:src="@drawable/home3"
         android:layout_weight="1"
         android:id="@+id/home"
         />
@@ -18,27 +18,26 @@
         android:layout_height="match_parent"
         android:src="@drawable/calendar"
         android:layout_weight="1"
-
         android:id="@+id/calendar"
         />
     <ImageView
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:src="@drawable/bar_chart"
+        android:src="@drawable/linechart"
         android:layout_weight="1"
         android:id="@+id/graph"
         />
     <ImageView
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:src="@drawable/user"
+        android:src="@drawable/profile"
         android:layout_weight="1"
         android:id="@+id/profile"
         />
     <ImageView
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:src="@drawable/setting"
+        android:src="@drawable/settings"
         android:layout_weight="1"
         android:id="@+id/setting"
         />
