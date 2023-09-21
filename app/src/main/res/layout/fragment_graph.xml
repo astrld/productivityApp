@@ -13,7 +13,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="32sp"
-            android:text="Profile"
+            android:text="Graph"
             android:textSize="18sp"
             android:fontFamily="@font/verdana"
             android:textStyle="bold"

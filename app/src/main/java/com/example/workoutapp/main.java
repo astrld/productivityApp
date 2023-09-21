@@ -28,6 +28,8 @@ public class main extends AppCompatActivity{
     private profileFragment ProfileFragment = new profileFragment();
 
     private settingsFragment SettingsFragment = new settingsFragment();
+
+    private static final int HOME_FRAGMENT = R.id.homeMenu;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,22 +43,21 @@ public class main extends AppCompatActivity{
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
                 // should get it from @menu/bottom_navigation_menu
-                switch (item.getItemId()){
-                    case R.id.homeMenu:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.container, HomeFragment).commit();
-                        return true;
-                    case R.id.calendarMenu:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.container, CalendarFragment).commit();
-                        return true;
-                    case R.id.graphMenu:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.container, GraphFragment).commit();
-                        return true;
-                    case R.id.profileMenu:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.container, ProfileFragment).commit();
-                        return true;
-                    case R.id.settingsMenu:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.container, SettingsFragment).commit();
-                        return true;
+                if(item.getItemId() == R.id.homeMenu){
+                    getSupportFragmentManager().beginTransaction().replace(R.id.container, HomeFragment).commit();
+                    return true;
+                } else if(item.getItemId() == R.id.calendarMenu){
+                    getSupportFragmentManager().beginTransaction().replace(R.id.container, CalendarFragment).commit();
+                    return true;
+                } else if(item.getItemId() == R.id.graphMenu){
+                    getSupportFragmentManager().beginTransaction().replace(R.id.container, GraphFragment).commit();
+                    return true;
+                } else if(item.getItemId() == R.id.profileMenu){
+                    getSupportFragmentManager().beginTransaction().replace(R.id.container, ProfileFragment).commit();
+                    return true;
+                } else if(item.getItemId() == R.id.settingsMenu){
+                    getSupportFragmentManager().beginTransaction().replace(R.id.container, SettingsFragment).commit();
+                    return true;
                 }
                 return false;
             }
