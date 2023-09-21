@@ -45,21 +45,16 @@ public class main extends AppCompatActivity{
                 // should get it from @menu/bottom_navigation_menu
                 if(item.getItemId() == R.id.homeMenu){
                     getSupportFragmentManager().beginTransaction().replace(R.id.container, HomeFragment).commit();
-                    return true;
                 } else if(item.getItemId() == R.id.calendarMenu){
                     getSupportFragmentManager().beginTransaction().replace(R.id.container, CalendarFragment).commit();
-                    return true;
                 } else if(item.getItemId() == R.id.graphMenu){
                     getSupportFragmentManager().beginTransaction().replace(R.id.container, GraphFragment).commit();
-                    return true;
                 } else if(item.getItemId() == R.id.profileMenu){
                     getSupportFragmentManager().beginTransaction().replace(R.id.container, ProfileFragment).commit();
-                    return true;
                 } else if(item.getItemId() == R.id.settingsMenu){
                     getSupportFragmentManager().beginTransaction().replace(R.id.container, SettingsFragment).commit();
-                    return true;
                 }
-                return false;
+                return true;
             }
         });
 

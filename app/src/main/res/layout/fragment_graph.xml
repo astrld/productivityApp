@@ -19,7 +19,6 @@
             android:textStyle="bold"
             android:gravity="center"
             android:textColor="@color/blue4"
-            android:id="@+id/displayName"
             />
     </LinearLayout>
 
