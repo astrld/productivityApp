@@ -57,7 +57,6 @@ public class main extends AppCompatActivity{
                 return true;
             }
         });
-
     }
 
     private void setStatusBarColor(@ColorRes int colorRes) {

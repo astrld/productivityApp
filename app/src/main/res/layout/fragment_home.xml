@@ -8,12 +8,12 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:id="@+id/topBar" `
+        android:id="@+id/topBar"
         android:layout_height="80dp">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="32sp"
-            android:text="Home"
+            android:text=""
             android:textSize="18sp"
             android:fontFamily="@font/verdana"
             android:textStyle="bold"
@@ -26,6 +26,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/topBar"
         android:orientation="vertical">
 
         <!-- First Row -->
@@ -115,6 +116,14 @@
         </LinearLayout>
 
     </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="250sp"
+        android:layout_height="250sp"
+        android:id="@+id/stopwatchContainer"
+        android:layout_centerInParent="true"
+        >
+    </FrameLayout>
 
 
 </RelativeLayout>
