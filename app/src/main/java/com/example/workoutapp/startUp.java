@@ -270,7 +270,7 @@ public class startUp extends AppCompatActivity {
                         return;
                     }
                     if(dbHandler.checkEmpty()) {
-                        dbHandler.addData(editText1.getText().toString(), editText2.getText().toString(), "", "", "", "", "", "");
+                        dbHandler.addDataToStart(editText1.getText().toString(), editText2.getText().toString(), "", "", "", "", "", "");
                     } else {
                         dbHandler.updateData(editText1.getText().toString(), editText2.getText().toString(), dbHandler.getHeight(), dbHandler.getHeightMetric(), dbHandler.getWeight(), dbHandler.getWeightMetric(), dbHandler.getGoalWeight(), dbHandler.getGoalWeightMetric());
                     }

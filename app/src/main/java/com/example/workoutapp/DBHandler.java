@@ -7,9 +7,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-
 public class DBHandler extends SQLiteOpenHelper{
 
     private static final String DB_Name = "userData";
@@ -17,6 +14,8 @@ public class DBHandler extends SQLiteOpenHelper{
     private static final int DB_VERSION = 1;
 
     private static final String TABLE_NAME = "startData";
+
+    private static final String STOPWATCH_TABLE_NAME = "stopwatchData";
 
     private static final String FIRST_NAME_COL = "firstName";
 
@@ -33,6 +32,11 @@ public class DBHandler extends SQLiteOpenHelper{
     private static final String GOAL_WEIGHT_COL = "goalWeightCol";
 
     private static final String GOAL_WEIGHT_METRIC_COL = "goalWeightMetricCol";
+
+    private static final String STOPWATCH_COL = "stopwatchCol";
+
+    private static final Boolean STOPWATCH_RUNNING_COL = false;
+
 
 
 
@@ -53,9 +57,14 @@ public class DBHandler extends SQLiteOpenHelper{
                 + GOAL_WEIGHT_COL + " TEXT,"
                 + GOAL_WEIGHT_METRIC_COL + " TEXT)";
         db.execSQL(query);
+
+        String query1 = "CREATE TABLE " + STOPWATCH_TABLE_NAME + " ("
+                + STOPWATCH_COL + " TEXT,"
+                + STOPWATCH_RUNNING_COL + " BOOLEAN)";
+        db.execSQL(query1);
     }
 
-    public void addData(String firstName, String lastName, String height, String heightMetric, String weight, String weightMetric, String goalWeight, String goalWeightMetric) {
+    public void addDataToStart(String firstName, String lastName, String height, String heightMetric, String weight, String weightMetric, String goalWeight, String goalWeightMetric) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -90,6 +99,30 @@ public class DBHandler extends SQLiteOpenHelper{
         db.update(TABLE_NAME, values, null, null);
         db.close();
         System.out.println("First Name: " + getFirstName() + "\nLast Name: " + getLastName() + "\nHeight: " + getHeight() + "\nHeight Metric: " +getHeightMetric() + "\nWeight: " + getWeight() + "\nWeight Metric: " + getWeightMetric() + "\nGoal Weight: " + getGoalWeight() + "\nGoal Weight Metric: " + getGoalWeightMetric());
+    }
+
+    public void addDataToStopwatch(String stopwatch, Boolean stopwatchRunning) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        values.put(STOPWATCH_COL, stopwatch);
+        values.put(String.valueOf(STOPWATCH_RUNNING_COL), stopwatchRunning);
+
+        db.insert(STOPWATCH_TABLE_NAME, null, values);
+        db.close();
+    }
+
+    public void updateStopwatch(String stopwatch, boolean stopwatchRunning) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        values.put(STOPWATCH_COL, stopwatch);
+        values.put(String.valueOf(STOPWATCH_RUNNING_COL), stopwatchRunning);
+
+        db.update(STOPWATCH_TABLE_NAME, values, null, null);
+        db.close();
     }
 
     public String getFirstName() {
@@ -211,6 +244,42 @@ public class DBHandler extends SQLiteOpenHelper{
                 cursor.close();
                 return true;
             }
+        }
+        cursor.close();
+        return false;
+    }
+
+    public int getStopwatchTime() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT " + STOPWATCH_COL + " FROM " + STOPWATCH_TABLE_NAME;
+        Cursor cursor = db.rawQuery(query, null);
+        int stopwatchTime = 0;
+        if (cursor.moveToFirst()) {
+            stopwatchTime = cursor.getInt(0);
+        }
+        cursor.close();
+        return stopwatchTime;
+    }
+
+    public boolean getStopwatchRunning() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT " + STOPWATCH_RUNNING_COL + " FROM " + STOPWATCH_TABLE_NAME;
+        Cursor cursor = db.rawQuery(query, null);
+        boolean stopwatchRunning = false;
+        if (cursor.moveToFirst()) {
+            stopwatchRunning = cursor.getInt(0) > 0;
+        }
+        cursor.close();
+        return stopwatchRunning;
+    }
+
+    public boolean ifStopwatchEmpty() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT * FROM " + STOPWATCH_TABLE_NAME;
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor.getCount() <= 0) {
+            cursor.close();
+            return true;
         }
         cursor.close();
         return false;

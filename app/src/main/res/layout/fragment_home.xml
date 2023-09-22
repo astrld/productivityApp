@@ -23,99 +23,99 @@
             />
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/topBar"
-        android:orientation="vertical">
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_below="@id/topBar"-->
+<!--        android:orientation="vertical">-->
 
-        <!-- First Row -->
-        <LinearLayout
-            android:id="@+id/firstRow"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_gravity="center_horizontal"
-            android:orientation="horizontal"
-            android:weightSum="3">
+<!--        &lt;!&ndash; First Row &ndash;&gt;-->
+<!--        <LinearLayout-->
+<!--            android:id="@+id/firstRow"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="50dp"-->
+<!--            android:layout_gravity="center_horizontal"-->
+<!--            android:orientation="horizontal"-->
+<!--            android:weightSum="3">-->
 
-            <ImageView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:src="@drawable/chesticon"
-                android:scaleType="centerInside" />
+<!--            <ImageView-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_weight="1"-->
+<!--                android:src="@drawable/chesticon"-->
+<!--                android:scaleType="centerInside" />-->
 
-            <ImageView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:src="@drawable/absicon"
-                android:scaleType="centerInside" />
+<!--            <ImageView-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_weight="1"-->
+<!--                android:src="@drawable/absicon"-->
+<!--                android:scaleType="centerInside" />-->
 
-            <ImageView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:src="@drawable/backicon"
-                android:scaleType="centerInside" />
-        </LinearLayout>
+<!--            <ImageView-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_weight="1"-->
+<!--                android:src="@drawable/backicon"-->
+<!--                android:scaleType="centerInside" />-->
+<!--        </LinearLayout>-->
 
-        <!-- Second Row -->
-        <LinearLayout
-            android:id="@+id/secondRow"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_gravity="center_horizontal"
-            android:orientation="horizontal"
-            android:weightSum="3">
+<!--        &lt;!&ndash; Second Row &ndash;&gt;-->
+<!--        <LinearLayout-->
+<!--            android:id="@+id/secondRow"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="50dp"-->
+<!--            android:layout_gravity="center_horizontal"-->
+<!--            android:orientation="horizontal"-->
+<!--            android:weightSum="3">-->
 
-            <ImageView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:src="@drawable/shouldericon"
-                android:scaleType="centerInside" />
+<!--            <ImageView-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_weight="1"-->
+<!--                android:src="@drawable/shouldericon"-->
+<!--                android:scaleType="centerInside" />-->
 
-            <ImageView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:src="@drawable/tricepicon"
-                android:scaleType="centerInside" />
+<!--            <ImageView-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_weight="1"-->
+<!--                android:src="@drawable/tricepicon"-->
+<!--                android:scaleType="centerInside" />-->
 
-            <ImageView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:src="@drawable/bicepsicon"
-                android:scaleType="centerInside" />
-        </LinearLayout>
+<!--            <ImageView-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_weight="1"-->
+<!--                android:src="@drawable/bicepsicon"-->
+<!--                android:scaleType="centerInside" />-->
+<!--        </LinearLayout>-->
 
-        <!-- Third Row -->
-        <LinearLayout
-            android:id="@+id/thirdRow"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_gravity="center_horizontal"
-            android:orientation="horizontal"
-            android:weightSum="2">
+<!--        &lt;!&ndash; Third Row &ndash;&gt;-->
+<!--        <LinearLayout-->
+<!--            android:id="@+id/thirdRow"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="50dp"-->
+<!--            android:layout_gravity="center_horizontal"-->
+<!--            android:orientation="horizontal"-->
+<!--            android:weightSum="2">-->
 
-            <ImageView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:src="@drawable/legsicon"
-                android:scaleType="centerInside" />
+<!--            <ImageView-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_weight="1"-->
+<!--                android:src="@drawable/legsicon"-->
+<!--                android:scaleType="centerInside" />-->
 
-            <ImageView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:src="@drawable/cardioicon"
-                android:scaleType="centerInside" />
-        </LinearLayout>
+<!--            <ImageView-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_weight="1"-->
+<!--                android:src="@drawable/cardioicon"-->
+<!--                android:scaleType="centerInside" />-->
+<!--        </LinearLayout>-->
 
-    </LinearLayout>
+<!--    </LinearLayout>-->
 
     <FrameLayout
         android:layout_width="250sp"
