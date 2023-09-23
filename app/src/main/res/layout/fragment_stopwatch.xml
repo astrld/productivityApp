@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="250sp"
+    android:layout_width="300sp"
     android:background="@drawable/stopwatch_background"
-    android:layout_height="250sp">
+    android:layout_height="300sp">
     <TextView
         android:id="@+id/muscleGroup"
         android:layout_width="match_parent"
@@ -11,9 +11,30 @@
         android:gravity="left"
         android:padding="15dp"
         android:layout_marginTop="10dp"
-        android:text="Cardio"
+        android:text=""
         android:textColor="@color/black"
         android:textSize="24sp"/>
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="79dp"
+        android:background="@drawable/backgroundforscrollthing"
+        android:layout_below="@id/muscleGroup"
+        >
+    </androidx.appcompat.widget.LinearLayoutCompat>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="2dp"
+        android:background="@color/beige2"
+        android:layout_below="@id/muscleGroup"
+        android:clipToPadding="false"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:overScrollMode="never"/>
+
     <TextView
         android:id="@+id/stopwatchTextview"
         android:layout_width="match_parent"
@@ -21,7 +42,8 @@
         android:fontFamily="@font/rocko"
         android:gravity="center"
         android:text="00:00:00"
-        android:layout_centerInParent="true"
+        android:layout_below="@id/recyclerView"
+        android:layout_marginTop="20dp"
         android:textColor="@color/black"
         android:textSize="32sp"
         android:textStyle="bold" />
@@ -31,20 +53,14 @@
         android:id="@+id/buttons"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="25dp"
-        android:weightSum="3"
+        android:weightSum="2"
         android:orientation="horizontal">
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="48sp"
             android:src="@drawable/play"
             android:layout_weight="1"
-            android:id="@+id/play"/>
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="48sp"
-            android:src="@drawable/pause"
-            android:layout_weight="1"
-            android:id="@+id/pause"/>
+            android:id="@+id/playpause"/>
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="48sp"

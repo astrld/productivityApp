@@ -98,7 +98,6 @@ public class DBHandler extends SQLiteOpenHelper{
 
         db.update(TABLE_NAME, values, null, null);
         db.close();
-        System.out.println("First Name: " + getFirstName() + "\nLast Name: " + getLastName() + "\nHeight: " + getHeight() + "\nHeight Metric: " +getHeightMetric() + "\nWeight: " + getWeight() + "\nWeight Metric: " + getWeightMetric() + "\nGoal Weight: " + getGoalWeight() + "\nGoal Weight Metric: " + getGoalWeightMetric());
     }
 
     public void addDataToStopwatch(String stopwatch, Boolean stopwatchRunning) {
