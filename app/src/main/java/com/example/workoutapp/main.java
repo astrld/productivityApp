@@ -16,6 +16,8 @@ public class main extends AppCompatActivity{
     private DBHandler dbHandler;
     private TextView displayName;
 
+    public static String currentTab = "home";
+
     private int currentView = 1;
     private BottomNavigationView bottomNavigationView;
 
@@ -45,14 +47,19 @@ public class main extends AppCompatActivity{
                 // should get it from @menu/bottom_navigation_menu
                 if(item.getItemId() == R.id.homeMenu){
                     getSupportFragmentManager().beginTransaction().replace(R.id.container, HomeFragment).commit();
+                    currentTab = "home";
                 } else if(item.getItemId() == R.id.calendarMenu){
                     getSupportFragmentManager().beginTransaction().replace(R.id.container, CalendarFragment).commit();
+                    currentTab = "calendar";
                 } else if(item.getItemId() == R.id.graphMenu){
                     getSupportFragmentManager().beginTransaction().replace(R.id.container, GraphFragment).commit();
+                    currentTab = "graph";
                 } else if(item.getItemId() == R.id.profileMenu){
                     getSupportFragmentManager().beginTransaction().replace(R.id.container, ProfileFragment).commit();
+                    currentTab = "profile";
                 } else if(item.getItemId() == R.id.settingsMenu){
                     getSupportFragmentManager().beginTransaction().replace(R.id.container, SettingsFragment).commit();
+                    currentTab = "settings";
                 }
                 return true;
             }

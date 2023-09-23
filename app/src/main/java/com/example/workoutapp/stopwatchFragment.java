@@ -59,7 +59,7 @@ public class stopwatchFragment extends Fragment{
                 R.drawable.cardioicon,
                 R.color.beige2
         };
-        MyAdapter adapter = new MyAdapter(iconResIds); // Create your custom adapter
+        MyAdapter adapter = new MyAdapter(iconResIds);
         recyclerView.setAdapter(adapter);
         int itemSpacing = getResources().getDimensionPixelSize(R.dimen.item_spacing);
         recyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
@@ -79,11 +79,13 @@ public class stopwatchFragment extends Fragment{
                 int closestDistance = Integer.MAX_VALUE;
                 for (int i = 0; i < layoutManager.getChildCount(); i++) {
                     View child = layoutManager.getChildAt(i);
-                    int childCenter = (layoutManager.getDecoratedRight(child) + layoutManager.getDecoratedLeft(child)) / 2;
-                    int distance = Math.abs(center - childCenter);
-                    if (distance < closestDistance) {
-                        closestDistance = distance;
-                        closestChild = child;
+                    if(child != null) {
+                        int childCenter = (layoutManager.getDecoratedRight(child) + layoutManager.getDecoratedLeft(child)) / 2;
+                        int distance = Math.abs(center - childCenter);
+                        if (distance < closestDistance) {
+                            closestDistance = distance;
+                            closestChild = child;
+                        }
                     }
                 }
                 int position = recyclerView.getChildLayoutPosition(closestChild);
@@ -167,7 +169,7 @@ public class stopwatchFragment extends Fragment{
     }
     public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
-        private int[] iconResIds; // Array of image resource IDs
+        private int[] iconResIds;
 
         public MyAdapter(int[] iconResIds) {
             this.iconResIds = iconResIds;
@@ -188,7 +190,7 @@ public class stopwatchFragment extends Fragment{
 
         @Override
         public int getItemCount() {
-            return iconResIds.length; // Return the number of items
+            return iconResIds.length;
         }
 
         public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -209,6 +211,7 @@ public class stopwatchFragment extends Fragment{
         public ZoomCenterLayoutManager(Context context) {
             super(context);
             setOrientation(LinearLayoutManager.HORIZONTAL);
+
         }
 
         @Override
@@ -221,15 +224,20 @@ public class stopwatchFragment extends Fragment{
             float s1 = 1.0f - mShrinkAmount;
             for (int i = 0; i < getChildCount(); i++) {
                 View child = getChildAt(i);
-                float childMidpoint = (getDecoratedRight(child) + getDecoratedLeft(child)) / 2.0f;
-                float d = Math.min(d1, Math.abs(midpoint - childMidpoint));
-                float scale = s0 + (s1 - s0) * (d - d0) / (d1 - d0);
-                child.setScaleX(scale);
-                child.setScaleY(scale);
+                if (child != null) {
+                    float childMidpoint = (getDecoratedRight(child) + getDecoratedLeft(child)) / 2.0f;
+                    float d = Math.min(d1, Math.abs(midpoint - childMidpoint));
+                    float scale = s0 + (s1 - s0) * (d - d0) / (d1 - d0);
+                    if (!Float.isNaN(scale)) {
+                        child.setScaleX(scale);
+                        child.setScaleY(scale);
+                    }
+                }
             }
             return scrolled;
         }
     }
+
 
     private void updateMuscleGroupText(int position) {
         switch (position) {
@@ -268,7 +276,6 @@ public class stopwatchFragment extends Fragment{
             @Override
             public void run() {
                 int secs = seconds;
-                // make secs into hours, minutes, seconds
                 int hours = secs / 3600;
                 secs = secs % 3600;
                 int minutes = secs / 60;
