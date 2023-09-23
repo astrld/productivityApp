@@ -40,7 +40,7 @@ public class stopwatchFragment extends Fragment{
         super.onViewCreated(view, savedInstanceState);
         pausePlayButton = getView().findViewById(R.id.playpause);
         stopButton = getView().findViewById(R.id.stop);
-
+        Database.dbHandler.addStopwatchData("0", "Chest", "0");
         timer = getView().findViewById(R.id.stopwatchTextview);
         recyclerView = getView().findViewById(R.id.recyclerView);
         layoutManager = new ZoomCenterLayoutManager(getContext());
@@ -88,12 +88,19 @@ public class stopwatchFragment extends Fragment{
                 }
                 int position = recyclerView.getChildLayoutPosition(closestChild);
                 updateMuscleGroupText(position);
+                if(userScrolled){
+                    running = false;
+                    pausePlayButton.setImageResource(R.drawable.play);
+                    seconds = 0;
+                    timer.setText("00:00:00");
+                    Database.dbHandler.updateStopwatchData("0", "Chest", "0");
+                }
             }
         });
 
         PagerSnapHelper snapHelper = new PagerSnapHelper();
         snapHelper.attachToRecyclerView(recyclerView);
-        recyclerView.smoothScrollBy(1, 0);
+        scrollToPosition(2);
         stopwatch();
         pausePlayButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,8 +121,49 @@ public class stopwatchFragment extends Fragment{
                 pausePlayButton.setImageResource(R.drawable.play);
                 seconds = 0;
                 timer.setText("00:00:00");
+                Database.dbHandler.updateStopwatchData("0", "Chest", "0");
             }
         });
+        if(Database.dbHandler.getIfStopWatchExists()){
+            seconds = Database.getDBHandler().getStopWatchSeconds();
+            if(seconds > 0) {
+                String muscleGroupText = Database.getDBHandler().getStopWatchMuscleGroup();
+                muscleGroup.setText(muscleGroupText);
+                System.out.println("MUSCLE GROUP IS" + muscleGroupText);
+                switch (muscleGroupText) {
+                    case "Chest":
+                        scrollToPosition(2);
+                        break;
+                    case "Abs":
+                        scrollToPosition(3);
+                        break;
+                    case "Back":
+                        scrollToPosition(4);
+                        break;
+                    case "Shoulders":
+                        scrollToPosition(5);
+                        break;
+                    case "Triceps":
+                        scrollToPosition(6);
+                        break;
+                    case "Biceps":
+                        scrollToPosition(7);
+                        break;
+                    case "Legs":
+                        scrollToPosition(8);
+                        break;
+                    case "Cardio":
+                        scrollToPosition(9);
+                        break;
+                }
+                long closingTime = Database.getDBHandler().getStopWatchClosingTime();
+                long currentTime = System.currentTimeMillis();
+                long difference = currentTime - closingTime;
+                seconds = seconds + (int) (difference / 1000);
+                running = true;
+                pausePlayButton.setImageResource(R.drawable.pause);
+            }
+        }
     }
     public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
@@ -219,24 +267,33 @@ public class stopwatchFragment extends Fragment{
         handler.post(new Runnable() {
             @Override
             public void run() {
-                int hours = 0;
-                int minutes = 0;
+                int secs = seconds;
+                // make secs into hours, minutes, seconds
+                int hours = secs / 3600;
+                secs = secs % 3600;
+                int minutes = secs / 60;
+                secs = secs % 60;
                 if(running){
                     seconds++;
-                    if(seconds == 60){
-                        seconds = 0;
-                        minutes++;
-                        if(minutes == 60){
-                            minutes = 0;
-                            hours++;
-                        }
-                    }
+                    long currentTime = System.currentTimeMillis();
+                    Database.dbHandler.updateStopwatchData(String.valueOf(seconds), muscleGroup.getText().toString(), String.valueOf(currentTime) );
                 }
-                String time = String.format("%02d:%02d:%02d", hours, minutes, seconds);
+                String time = String.format("%02d:%02d:%02d", hours, minutes, secs);
                 timer.setText(time);
                 handler.postDelayed(this, 1000);
             }
         });
+    }
+    private boolean userScrolled = true;
+    private void scrollToPosition(int position) {
+        recyclerView.smoothScrollToPosition(position);
+        userScrolled = false;
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                userScrolled = true;
+            }
+        }, 1000);
     }
 
 }

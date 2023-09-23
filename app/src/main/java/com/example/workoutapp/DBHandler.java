@@ -11,7 +11,7 @@ public class DBHandler extends SQLiteOpenHelper{
 
     private static final String DB_Name = "userData";
 
-    private static final int DB_VERSION = 1;
+    private static final int DB_VERSION = 2;
 
     private static final String TABLE_NAME = "startData";
 
@@ -33,9 +33,11 @@ public class DBHandler extends SQLiteOpenHelper{
 
     private static final String GOAL_WEIGHT_METRIC_COL = "goalWeightMetricCol";
 
-    private static final String STOPWATCH_COL = "stopwatchCol";
+    private static final String STOPWATCH_SECONDS_COL = "stopwatchSecondsCol";
+    private static final String STOPWATCH_MUSCLE_GROUP_COL = "stopwatchMuscleGroupCol";
+    private static final String STOPWATCH_CLOSING_TIME_COL = "stopwatchClosingTimeCol";
 
-    private static final Boolean STOPWATCH_RUNNING_COL = false;
+
 
 
 
@@ -47,7 +49,7 @@ public class DBHandler extends SQLiteOpenHelper{
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String query = "CREATE TABLE " + TABLE_NAME + " ("
+        String startData = "CREATE TABLE " + TABLE_NAME + " ("
                 + FIRST_NAME_COL + " TEXT,"
                 + LAST_NAME_COL + " TEXT,"
                 + HEIGHT_COL + " TEXT,"
@@ -56,12 +58,13 @@ public class DBHandler extends SQLiteOpenHelper{
                 + WEIGHT_METRIC_COL + " TEXT,"
                 + GOAL_WEIGHT_COL + " TEXT,"
                 + GOAL_WEIGHT_METRIC_COL + " TEXT)";
-        db.execSQL(query);
+        db.execSQL(startData);
 
-        String query1 = "CREATE TABLE " + STOPWATCH_TABLE_NAME + " ("
-                + STOPWATCH_COL + " TEXT,"
-                + STOPWATCH_RUNNING_COL + " BOOLEAN)";
-        db.execSQL(query1);
+        String stopwatchQuery = "CREATE TABLE " + STOPWATCH_TABLE_NAME + " ("
+                + STOPWATCH_SECONDS_COL + " TEXT,"
+                + STOPWATCH_MUSCLE_GROUP_COL + " TEXT,"
+                + STOPWATCH_CLOSING_TIME_COL + " TEXT)";
+        db.execSQL(stopwatchQuery);
     }
 
     public void addDataToStart(String firstName, String lastName, String height, String heightMetric, String weight, String weightMetric, String goalWeight, String goalWeightMetric) {
@@ -100,29 +103,81 @@ public class DBHandler extends SQLiteOpenHelper{
         db.close();
     }
 
-    public void addDataToStopwatch(String stopwatch, Boolean stopwatchRunning) {
+    public void addStopwatchData(String seconds, String muscleGroup, String closingTime){
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
 
-        values.put(STOPWATCH_COL, stopwatch);
-        values.put(String.valueOf(STOPWATCH_RUNNING_COL), stopwatchRunning);
+        values.put(STOPWATCH_SECONDS_COL, seconds);
+        values.put(STOPWATCH_MUSCLE_GROUP_COL, muscleGroup);
+        values.put(STOPWATCH_CLOSING_TIME_COL, closingTime);
 
         db.insert(STOPWATCH_TABLE_NAME, null, values);
         db.close();
     }
 
-    public void updateStopwatch(String stopwatch, boolean stopwatchRunning) {
+    public void updateStopwatchData(String seconds, String muscleGroup, String closingTime){
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
 
-        values.put(STOPWATCH_COL, stopwatch);
-        values.put(String.valueOf(STOPWATCH_RUNNING_COL), stopwatchRunning);
+        values.put(STOPWATCH_SECONDS_COL, seconds);
+        values.put(STOPWATCH_MUSCLE_GROUP_COL, muscleGroup);
+        values.put(STOPWATCH_CLOSING_TIME_COL, closingTime);
 
         db.update(STOPWATCH_TABLE_NAME, values, null, null);
         db.close();
     }
+
+    public int getStopWatchSeconds(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT " + STOPWATCH_SECONDS_COL + " FROM " + STOPWATCH_TABLE_NAME;
+        Cursor cursor = db.rawQuery(query, null);
+        int seconds = 0;
+        if (cursor.moveToFirst()) {
+            seconds = Integer.parseInt(cursor.getString(0));
+        }
+        cursor.close();
+        return seconds;
+    }
+
+    public String getStopWatchMuscleGroup(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT " + STOPWATCH_MUSCLE_GROUP_COL + " FROM " + STOPWATCH_TABLE_NAME;
+        Cursor cursor = db.rawQuery(query, null);
+        String muscleGroup = "";
+        if (cursor.moveToFirst()) {
+            muscleGroup = cursor.getString(0);
+        }
+        cursor.close();
+        return muscleGroup;
+    }
+
+    public long getStopWatchClosingTime(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT " + STOPWATCH_CLOSING_TIME_COL + " FROM " + STOPWATCH_TABLE_NAME;
+        Cursor cursor = db.rawQuery(query, null);
+        long closingTime = 0;
+        if (cursor.moveToFirst()) {
+            closingTime = Long.parseLong(cursor.getString(0));
+        }
+        cursor.close();
+        return closingTime;
+    }
+
+    public boolean getIfStopWatchExists(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT * FROM " + STOPWATCH_TABLE_NAME;
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor.getCount() <= 0) {
+            cursor.close();
+            return false;
+        }
+        cursor.close();
+        return true;
+    }
+
+
 
     public String getFirstName() {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -243,42 +298,6 @@ public class DBHandler extends SQLiteOpenHelper{
                 cursor.close();
                 return true;
             }
-        }
-        cursor.close();
-        return false;
-    }
-
-    public int getStopwatchTime() {
-        SQLiteDatabase db = this.getWritableDatabase();
-        String query = "SELECT " + STOPWATCH_COL + " FROM " + STOPWATCH_TABLE_NAME;
-        Cursor cursor = db.rawQuery(query, null);
-        int stopwatchTime = 0;
-        if (cursor.moveToFirst()) {
-            stopwatchTime = cursor.getInt(0);
-        }
-        cursor.close();
-        return stopwatchTime;
-    }
-
-    public boolean getStopwatchRunning() {
-        SQLiteDatabase db = this.getWritableDatabase();
-        String query = "SELECT " + STOPWATCH_RUNNING_COL + " FROM " + STOPWATCH_TABLE_NAME;
-        Cursor cursor = db.rawQuery(query, null);
-        boolean stopwatchRunning = false;
-        if (cursor.moveToFirst()) {
-            stopwatchRunning = cursor.getInt(0) > 0;
-        }
-        cursor.close();
-        return stopwatchRunning;
-    }
-
-    public boolean ifStopwatchEmpty() {
-        SQLiteDatabase db = this.getWritableDatabase();
-        String query = "SELECT * FROM " + STOPWATCH_TABLE_NAME;
-        Cursor cursor = db.rawQuery(query, null);
-        if (cursor.getCount() <= 0) {
-            cursor.close();
-            return true;
         }
         cursor.close();
         return false;
