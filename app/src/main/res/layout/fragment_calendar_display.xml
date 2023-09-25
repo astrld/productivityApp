@@ -7,44 +7,80 @@
 
     <Spinner
         android:id="@+id/spinnerDatePeriod"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="36dp"
         android:layout_gravity="center"
         android:layout_marginTop="16dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/calendar_button_not_selected"
+        android:fontFamily="@font/rocko"
         android:gravity="center" />
 
-    <Button
-        android:id="@+id/btnBefore2"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text=""
-        android:layout_gravity="center"/>
+        android:weightSum="5"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        >
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnBefore2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:layout_weight="1"
+            android:layout_marginRight="8dp"
+            android:background="@drawable/calendar_button_not_selected"
+            android:textColor="@color/black"
+            android:fontFamily="@font/rocko"
+            android:layout_gravity="center"/>
 
-    <Button
-        android:id="@+id/btnBefore1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=""
-        android:layout_gravity="center"/>
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnBefore1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:layout_weight="1"
+            android:layout_marginRight="8dp"
+            android:background="@drawable/calendar_button_not_selected"
+            android:textColor="@color/black"
+            android:fontFamily="@font/rocko"
+            android:layout_gravity="center"/>
 
-    <Button
-        android:id="@+id/btnCurrent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=""
-        android:layout_gravity="center"/>
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnCurrent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:layout_weight="1"
+            android:layout_marginRight="8dp"
+            android:background="@drawable/calendar_button_not_selected"
+            android:textColor="@color/black"
+            android:fontFamily="@font/rocko"
+            android:layout_gravity="center"/>
 
-    <Button
-        android:id="@+id/btnAfter1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=""
-        android:layout_gravity="center"/>
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnAfter1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:layout_weight="1"
+            android:layout_marginRight="8dp"
+            android:background="@drawable/calendar_button_not_selected"
+            android:textColor="@color/black"
+            android:fontFamily="@font/rocko"
+            android:layout_gravity="center"/>
 
-    <Button
-        android:id="@+id/btnAfter2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=""
-        android:layout_gravity="center"/>
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnAfter2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:layout_weight="1"
+            android:layout_marginRight="8dp"
+            android:background="@drawable/calendar_button_not_selected"
+            android:textColor="@color/black"
+            android:fontFamily="@font/rocko"
+            android:layout_gravity="center"/>
+    </LinearLayout>
 </LinearLayout>
