@@ -270,8 +270,13 @@ public class stopwatchFragment extends Fragment{
 
     private int seconds = 0;
 
+    private boolean stopWatchExists = false;
     private void stopwatch(){
+        if(stopWatchExists){
+            return;
+        }
         final Handler handler = new Handler();
+        stopWatchExists = true;
         handler.post(new Runnable() {
             @Override
             public void run() {
