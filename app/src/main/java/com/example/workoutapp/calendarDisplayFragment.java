@@ -16,12 +16,15 @@ import androidx.fragment.app.Fragment;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 public class calendarDisplayFragment extends Fragment {
 
     private Spinner spinner;
 
     private Button day1, day2, day3, day4, day5;
+
+    private Date date;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -41,12 +44,15 @@ public class calendarDisplayFragment extends Fragment {
         day3 = view.findViewById(R.id.btnCurrent);
         day4 = view.findViewById(R.id.btnAfter1);
         day5 = view.findViewById(R.id.btnAfter2);
-
+        Calendar cal = Calendar.getInstance();
+        date = cal.getTime();
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String text = adapterView.getItemAtPosition(i).toString();
-                updateCalendar(text);
+                Calendar cal = Calendar.getInstance();
+                date = cal.getTime();
+                updateCalendar(text, date);
             }
 
             @Override
@@ -54,12 +60,46 @@ public class calendarDisplayFragment extends Fragment {
                 // do nothing
             }
         });
+
+        day1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dateChanged();
+            }
+        });
+        day2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dateChanged();
+            }
+        });
+        day3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dateChanged();
+            }
+        });
+
+        day4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dateChanged();
+            }
+        });
+
+        day5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dateChanged();
+            }
+        });
     }
 
-    private void updateCalendar(String text){
+    private void updateCalendar(String text, Date date){
         int x = 0;
         SimpleDateFormat sdf = new SimpleDateFormat("MMM d");
         Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
         switch (text){
             case "Days":
                 x = Calendar.DATE;
@@ -82,6 +122,33 @@ public class calendarDisplayFragment extends Fragment {
         day4.setText(sdf.format(cal.getTime()));
         cal.add(x, 1);
         day5.setText(sdf.format(cal.getTime()));
+    }
+
+    private void dateChanged(int x){
+        String text = spinner.getSelectedItem().toString();
+        switch (text){
+            case "Days":
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(date);
+                cal.add(Calendar.DATE, -3);
+                updateCalendar(text, cal.getTime());
+                date = cal.getTime();
+                break;
+            case "Weeks":
+                cal = Calendar.getInstance();
+                cal.setTime(date);
+                cal.add(Calendar.WEEK_OF_MONTH, -3);
+                updateCalendar(text, cal.getTime());
+                date = cal.getTime();
+                break;
+            case "Months":
+                cal = Calendar.getInstance();
+                cal.setTime(date);
+                cal.add(Calendar.MONTH, -3);
+                updateCalendar(text, cal.getTime());
+                date = cal.getTime();
+                break;
+        }
     }
 
 }
