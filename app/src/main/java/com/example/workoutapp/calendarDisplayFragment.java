@@ -24,7 +24,7 @@ public class calendarDisplayFragment extends Fragment {
 
     private Button day1, day2, day3, day4, day5;
 
-    private Date date;
+    public static Date date;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -64,35 +64,37 @@ public class calendarDisplayFragment extends Fragment {
         day1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dateChanged();
+                dateChanged(-2);
             }
         });
         day2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dateChanged();
+                dateChanged(-1);
             }
         });
         day3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dateChanged();
+                dateChanged(0);
             }
         });
 
         day4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dateChanged();
+                dateChanged(1);
             }
         });
 
         day5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dateChanged();
+                dateChanged(2);
             }
         });
+
+        updateData();
     }
 
     private void updateCalendar(String text, Date date){
@@ -130,25 +132,30 @@ public class calendarDisplayFragment extends Fragment {
             case "Days":
                 Calendar cal = Calendar.getInstance();
                 cal.setTime(date);
-                cal.add(Calendar.DATE, -3);
+                cal.add(Calendar.DATE, x);
                 updateCalendar(text, cal.getTime());
                 date = cal.getTime();
                 break;
             case "Weeks":
                 cal = Calendar.getInstance();
                 cal.setTime(date);
-                cal.add(Calendar.WEEK_OF_MONTH, -3);
+                cal.add(Calendar.WEEK_OF_MONTH, x);
                 updateCalendar(text, cal.getTime());
                 date = cal.getTime();
                 break;
             case "Months":
                 cal = Calendar.getInstance();
                 cal.setTime(date);
-                cal.add(Calendar.MONTH, -3);
+                cal.add(Calendar.MONTH, x);
                 updateCalendar(text, cal.getTime());
                 date = cal.getTime();
                 break;
         }
+        updateData();
+    }
+
+    private void updateData(){
+        dataDisplayFragment.updateDataDisplay(date);
     }
 
 }

@@ -16,6 +16,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 public class stopwatchFragment extends Fragment{
 
     private ImageView pausePlayButton;
@@ -93,6 +97,7 @@ public class stopwatchFragment extends Fragment{
                 if(userScrolled){
                     running = false;
                     pausePlayButton.setImageResource(R.drawable.play);
+                    addData();
                     seconds = 0;
                     timer.setText("00:00:00");
                     Database.dbHandler.updateStopwatchData("0", "Chest", "0");
@@ -121,6 +126,7 @@ public class stopwatchFragment extends Fragment{
             public void onClick(View v) {
                 running = false;
                 pausePlayButton.setImageResource(R.drawable.play);
+                addData();
                 seconds = 0;
                 timer.setText("00:00:00");
                 Database.dbHandler.updateStopwatchData("0", "Chest", "0");
@@ -306,6 +312,43 @@ public class stopwatchFragment extends Fragment{
                 userScrolled = true;
             }
         }, 1000);
+    }
+
+    private void addData(){
+        String muscleGroupText = muscleGroup.getText().toString();
+        int chest = 0; int abs = 0; int back = 0; int shoulders = 0; int triceps = 0; int biceps = 0; int legs = 0; int cardio = 0;
+        switch (muscleGroupText){
+            case "Chest":
+                chest = seconds;
+                break;
+            case "Abs":
+                abs = seconds;
+                break;
+            case "Back":
+                back = seconds;
+                break;
+            case "Shoulders":
+                shoulders = seconds;
+                break;
+            case "Triceps":
+                triceps = seconds;
+                break;
+            case "Biceps":
+                biceps = seconds;
+                break;
+            case "Legs":
+                legs = seconds;
+                break;
+            case "Cardio":
+                cardio = seconds;
+                break;
+        }
+        Date date = new Date();
+        Calendar cal = Calendar.getInstance();
+        date = cal.getTime();
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+        String dateString = sdf.format(date);
+        Database.dbHandler.ifDayExists(dateString,0,chest, abs, back, shoulders, triceps, biceps, legs, cardio);
     }
 
 }

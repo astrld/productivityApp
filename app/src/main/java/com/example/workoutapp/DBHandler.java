@@ -37,6 +37,18 @@ public class DBHandler extends SQLiteOpenHelper{
     private static final String STOPWATCH_MUSCLE_GROUP_COL = "stopwatchMuscleGroupCol";
     private static final String STOPWATCH_CLOSING_TIME_COL = "stopwatchClosingTimeCol";
 
+    private static final String DATA_TABLE_NAME = "dataTable";
+    private static final String DATA_DATE_COL = "dataDateCol";
+    private static final String DATA_WEIGHT_COL = "dataWeightCol";
+
+    private static final String DATA_CHEST_COL = "dataChestCol";
+    private static final String DATA_BACK_COL = "dataBackCol";
+    private static final String DATA_ABS_COL = "dataAbsCol";
+    private static final String DATA_SHOULDERS_COL = "dataShouldersCol";
+    private static final String DATA_TRICEPS_COL = "dataTricepsCol";
+    private static final String DATA_BICEPS_COL = "dataBicepsCol";
+    private static final String DATA_LEGS_COL = "dataLegsCol";
+    private static final String DATA_CARDIO_COL = "dataCardioCol";
 
 
 
@@ -65,6 +77,19 @@ public class DBHandler extends SQLiteOpenHelper{
                 + STOPWATCH_MUSCLE_GROUP_COL + " TEXT,"
                 + STOPWATCH_CLOSING_TIME_COL + " TEXT)";
         db.execSQL(stopwatchQuery);
+
+        String data = "CREATE TABLE " + DATA_TABLE_NAME + " ("
+                + DATA_DATE_COL + " TEXT,"
+                + DATA_WEIGHT_COL + " INTEGER,"
+                + DATA_CHEST_COL + " INTEGER,"
+                + DATA_BACK_COL + " INTEGER,"
+                + DATA_ABS_COL + " INTEGER,"
+                + DATA_SHOULDERS_COL + " INTEGER,"
+                + DATA_TRICEPS_COL + " INTEGER,"
+                + DATA_BICEPS_COL + " INTEGER,"
+                + DATA_LEGS_COL + " INTEGER,"
+                + DATA_CARDIO_COL + " INTEGER)";
+        db.execSQL(data);
     }
 
     public void addDataToStart(String firstName, String lastName, String height, String heightMetric, String weight, String weightMetric, String goalWeight, String goalWeightMetric) {
@@ -127,6 +152,193 @@ public class DBHandler extends SQLiteOpenHelper{
 
         db.update(STOPWATCH_TABLE_NAME, values, null, null);
         db.close();
+    }
+
+    public void ifDayExists(String date, int weight, int chest, int back, int abs, int shoulders, int triceps, int biceps, int legs, int cardio){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT * FROM " + DATA_TABLE_NAME + " WHERE " + DATA_DATE_COL + " = '" + date + "'";
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor.getCount() <= 0) {
+            newDay(date, weight, chest, back, abs, shoulders, triceps, biceps, legs, cardio);
+        } else {
+            updateDay(date, weight, chest, back, abs, shoulders, triceps, biceps, legs, cardio);
+        }
+        cursor.close();
+    }
+
+    public void newDay(String date, int weight, int chest, int back, int abs, int shoulders, int triceps, int biceps, int legs, int cardio){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        values.put(DATA_DATE_COL, date);
+        values.put(DATA_WEIGHT_COL, weight);
+        values.put(DATA_CHEST_COL, chest);
+        values.put(DATA_BACK_COL, back);
+        values.put(DATA_ABS_COL, abs);
+        values.put(DATA_SHOULDERS_COL, shoulders);
+        values.put(DATA_TRICEPS_COL, triceps);
+        values.put(DATA_BICEPS_COL, biceps);
+        values.put(DATA_LEGS_COL, legs);
+        values.put(DATA_CARDIO_COL, cardio);
+
+        db.insert(DATA_TABLE_NAME, null, values);
+        db.close();
+    }
+
+    public void updateDay(String date, int weight, int chest, int back, int abs, int shoulders, int triceps, int biceps, int legs, int cardio){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        if (chest == 0){
+            chest = getChest(date);
+        } else {
+            chest += getChest(date);
+        }
+        if (back == 0){
+            back = getBack(date);
+        } else {
+            back += getBack(date);
+        }
+        if (abs == 0){
+            abs = getAbs(date);
+        } else {
+            abs += getAbs(date);
+        }
+        if (shoulders == 0){
+            shoulders = getShoulders(date);
+        } else {
+            shoulders += getShoulders(date);
+        }
+        if (triceps == 0){
+            triceps = getTriceps(date);
+        } else {
+            triceps += getTriceps(date);
+        }
+        if (biceps == 0){
+            biceps = getBiceps(date);
+        } else {
+            biceps += getBiceps(date);
+        }
+        if (legs == 0){
+            legs = getLegs(date);
+        } else {
+            legs += getLegs(date);
+        }
+        if (cardio == 0){
+            cardio = getCardio(date);
+        } else {
+            cardio += getCardio(date);
+        }
+        values.put(DATA_DATE_COL, date);
+        values.put(DATA_WEIGHT_COL, weight);
+        values.put(DATA_CHEST_COL, chest);
+        values.put(DATA_BACK_COL, back);
+        values.put(DATA_ABS_COL, abs);
+        values.put(DATA_SHOULDERS_COL, shoulders);
+        values.put(DATA_TRICEPS_COL, triceps);
+        values.put(DATA_BICEPS_COL, biceps);
+        values.put(DATA_LEGS_COL, legs);
+        values.put(DATA_CARDIO_COL, cardio);
+
+        db.update(DATA_TABLE_NAME, values, DATA_DATE_COL + " = ?", new String[]{date});
+        db.close();
+    }
+
+    public int getChest(String date){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT " + DATA_CHEST_COL + " FROM " + DATA_TABLE_NAME + " WHERE " + DATA_DATE_COL + " = '" + date + "'";
+        Cursor cursor = db.rawQuery(query, null);
+        int chest = 0;
+        if (cursor.moveToFirst()) {
+            chest = Integer.parseInt(cursor.getString(0));
+        }
+        cursor.close();
+        return chest;
+    }
+
+    public int getBack(String date){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT " + DATA_BACK_COL + " FROM " + DATA_TABLE_NAME + " WHERE " + DATA_DATE_COL + " = '" + date + "'";
+        Cursor cursor = db.rawQuery(query, null);
+        int back = 0;
+        if (cursor.moveToFirst()) {
+            back = Integer.parseInt(cursor.getString(0));
+        }
+        cursor.close();
+        return back;
+    }
+
+    public int getAbs(String date){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT " + DATA_ABS_COL + " FROM " + DATA_TABLE_NAME + " WHERE " + DATA_DATE_COL + " = '" + date + "'";
+        Cursor cursor = db.rawQuery(query, null);
+        int abs = 0;
+        if (cursor.moveToFirst()) {
+            abs = Integer.parseInt(cursor.getString(0));
+        }
+        cursor.close();
+        return abs;
+    }
+
+    public int getShoulders(String date){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT " + DATA_SHOULDERS_COL + " FROM " + DATA_TABLE_NAME + " WHERE " + DATA_DATE_COL + " = '" + date + "'";
+        Cursor cursor = db.rawQuery(query, null);
+        int shoulders = 0;
+        if (cursor.moveToFirst()) {
+            shoulders = Integer.parseInt(cursor.getString(0));
+        }
+        cursor.close();
+        return shoulders;
+    }
+
+    public int getTriceps(String date){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT " + DATA_TRICEPS_COL + " FROM " + DATA_TABLE_NAME + " WHERE " + DATA_DATE_COL + " = '" + date + "'";
+        Cursor cursor = db.rawQuery(query, null);
+        int triceps = 0;
+        if (cursor.moveToFirst()) {
+            triceps = Integer.parseInt(cursor.getString(0));
+        }
+        cursor.close();
+        return triceps;
+    }
+
+    public int getBiceps(String date){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT " + DATA_BICEPS_COL + " FROM " + DATA_TABLE_NAME + " WHERE " + DATA_DATE_COL + " = '" + date + "'";
+        Cursor cursor = db.rawQuery(query, null);
+        int biceps = 0;
+        if (cursor.moveToFirst()) {
+            biceps = Integer.parseInt(cursor.getString(0));
+        }
+        cursor.close();
+        return biceps;
+    }
+
+    public int getLegs(String date){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT " + DATA_LEGS_COL + " FROM " + DATA_TABLE_NAME + " WHERE " + DATA_DATE_COL + " = '" + date + "'";
+        Cursor cursor = db.rawQuery(query, null);
+        int legs = 0;
+        if (cursor.moveToFirst()) {
+            legs = Integer.parseInt(cursor.getString(0));
+        }
+        cursor.close();
+        return legs;
+    }
+
+    public int getCardio(String date){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT " + DATA_CARDIO_COL + " FROM " + DATA_TABLE_NAME + " WHERE " + DATA_DATE_COL + " = '" + date + "'";
+        Cursor cursor = db.rawQuery(query, null);
+        int cardio = 0;
+        if (cursor.moveToFirst()) {
+            cardio = Integer.parseInt(cursor.getString(0));
+        }
+        cursor.close();
+        return cardio;
     }
 
     public int getStopWatchSeconds(){
