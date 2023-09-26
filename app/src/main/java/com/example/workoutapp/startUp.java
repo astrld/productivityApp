@@ -45,6 +45,10 @@ public class startUp extends AppCompatActivity {
         startUpName = findViewById(R.id.startUpName);
         String name = "fit-track";
         startUpName.setText("");
+        CSVReader.loadCSVFile(
+                startUp.this,
+                "sample.csv",
+                dbHandler.getWritableDatabase());
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {

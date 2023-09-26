@@ -37,18 +37,18 @@ public class DBHandler extends SQLiteOpenHelper{
     private static final String STOPWATCH_MUSCLE_GROUP_COL = "stopwatchMuscleGroupCol";
     private static final String STOPWATCH_CLOSING_TIME_COL = "stopwatchClosingTimeCol";
 
-    private static final String DATA_TABLE_NAME = "dataTable";
-    private static final String DATA_DATE_COL = "dataDateCol";
-    private static final String DATA_WEIGHT_COL = "dataWeightCol";
+    public static final String DATA_TABLE_NAME = "dataTable";
+    public static final String DATA_DATE_COL = "dataDateCol";
+    public static final String DATA_WEIGHT_COL = "dataWeightCol";
 
-    private static final String DATA_CHEST_COL = "dataChestCol";
-    private static final String DATA_BACK_COL = "dataBackCol";
-    private static final String DATA_ABS_COL = "dataAbsCol";
-    private static final String DATA_SHOULDERS_COL = "dataShouldersCol";
-    private static final String DATA_TRICEPS_COL = "dataTricepsCol";
-    private static final String DATA_BICEPS_COL = "dataBicepsCol";
-    private static final String DATA_LEGS_COL = "dataLegsCol";
-    private static final String DATA_CARDIO_COL = "dataCardioCol";
+    public static final String DATA_CHEST_COL = "dataChestCol";
+    public static final String DATA_BACK_COL = "dataBackCol";
+    public static final String DATA_ABS_COL = "dataAbsCol";
+    public static final String DATA_SHOULDERS_COL = "dataShouldersCol";
+    public static final String DATA_TRICEPS_COL = "dataTricepsCol";
+    public static final String DATA_BICEPS_COL = "dataBicepsCol";
+    public static final String DATA_LEGS_COL = "dataLegsCol";
+    public static final String DATA_CARDIO_COL = "dataCardioCol";
 
 
 
@@ -107,6 +107,7 @@ public class DBHandler extends SQLiteOpenHelper{
         values.put(GOAL_WEIGHT_METRIC_COL, goalWeightMetric);
 
         db.insert(TABLE_NAME, null, values);
+
         db.close();
     }
 
@@ -183,6 +184,7 @@ public class DBHandler extends SQLiteOpenHelper{
         values.put(DATA_CARDIO_COL, cardio);
 
         db.insert(DATA_TABLE_NAME, null, values);
+        System.out.println("Date: " + date + "\n Weight" + weight + "\n Chest: " + chest + "\n Back: " + back + "\n Abs: " + abs + "\n Shoulders: " + shoulders + "\n Triceps: " + triceps + "\n Biceps: " + biceps + "\n Legs: " + legs + "\n Cardio: " + cardio + "\n");
         db.close();
     }
 
@@ -241,6 +243,7 @@ public class DBHandler extends SQLiteOpenHelper{
         values.put(DATA_LEGS_COL, legs);
         values.put(DATA_CARDIO_COL, cardio);
         db.update(DATA_TABLE_NAME, values, DATA_DATE_COL + " = ?", new String[]{date});
+        System.out.println("UPDATEDDD Date: " + date + "\n Weight" + weight + "\n Chest: " + chest + "\n Back: " + back + "\n Abs: " + abs + "\n Shoulders: " + shoulders + "\n Triceps: " + triceps + "\n Biceps: " + biceps + "\n Legs: " + legs + "\n Cardio: " + cardio + "\n");
         db.close();
     }
 
