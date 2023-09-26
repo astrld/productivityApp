@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Vibrator;
 import android.view.View;
@@ -17,6 +18,12 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 public class startUp extends AppCompatActivity {
     private Button getStartedButton, backButton, nextButton, button1, button2;
@@ -45,6 +52,32 @@ public class startUp extends AppCompatActivity {
         startUpName = findViewById(R.id.startUpName);
         String name = "fit-track";
         startUpName.setText("");
+        // update values in assets/sample.csv
+        try {
+            FileWriter writer = new FileWriter(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/sample.csv"));
+            writer.write("Date,Weight,Chest,Back,Abs,Shoulders,Triceps,Biceps,Legs,Cardio\n");
+            Calendar cal = Calendar.getInstance();
+            int x = -1;
+            for(int i =0; i<120; i++){
+                cal.add(Calendar.DATE, -x);
+                Date date = cal.getTime();
+                String dateStr = new SimpleDateFormat("MM/dd/yyyy").format(date);
+                int randWeight = (int) (Math.random()*100 + 100);
+                int randChest = (int) (Math.random()*20) * 60;
+                int randBack = (int) (Math.random()*20) * 60;
+                int randAbs = (int) (Math.random()*20) * 60;
+                int randShoulders = (int) (Math.random()*20) * 60;
+                int randTriceps = (int) (Math.random()*20) * 60;
+                int randBiceps = (int) (Math.random()*20) * 60;
+                int randLegs = (int) (Math.random()*20) * 60;
+                int randCardio = (int) (Math.random()*20) * 60;
+                writer.write(dateStr + "," + randWeight + "," + randChest + "," + randBack + "," + randAbs + "," + randShoulders + "," + randTriceps + "," + randBiceps + "," + randLegs + "," + randCardio + "\n");
+                x++;
+            }
+            writer.close();
+        } catch (Exception e) {
+
+        }
         CSVReader.loadCSVFile(
                 startUp.this,
                 "sample.csv",
