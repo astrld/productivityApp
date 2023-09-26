@@ -2,12 +2,14 @@ package com.example.workoutapp;
 
 import androidx.annotation.ColorRes;
 import androidx.appcompat.app.AppCompatActivity;
+import com.opencsv.CSVWriter;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Vibrator;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -54,8 +56,9 @@ public class startUp extends AppCompatActivity {
         startUpName.setText("");
         // update values in assets/sample.csv
         try {
-            FileWriter writer = new FileWriter(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/sample.csv"));
-            writer.write("Date,Weight,Chest,Back,Abs,Shoulders,Triceps,Biceps,Legs,Cardio\n");
+            FileWriter writer = new FileWriter(new File("assets/sample.csv"));
+            CSVWriter csvWriter = new CSVWriter(writer);
+            csvWriter.writeNext(new String[]{"Date", "Weight", "Chest", "Back", "Abs", "Shoulders", "Triceps", "Biceps", "Legs", "Cardio"});
             Calendar cal = Calendar.getInstance();
             int x = -1;
             for(int i =0; i<120; i++){
@@ -71,13 +74,16 @@ public class startUp extends AppCompatActivity {
                 int randBiceps = (int) (Math.random()*20) * 60;
                 int randLegs = (int) (Math.random()*20) * 60;
                 int randCardio = (int) (Math.random()*20) * 60;
-                writer.write(dateStr + "," + randWeight + "," + randChest + "," + randBack + "," + randAbs + "," + randShoulders + "," + randTriceps + "," + randBiceps + "," + randLegs + "," + randCardio + "\n");
+                csvWriter.writeNext(new String[]{dateStr, randWeight + "", randChest + "", randBack + "", randAbs + "", randShoulders + "", randTriceps + "", randBiceps + "", randLegs + "", randCardio + ""});
                 x++;
             }
+            csvWriter.close();
             writer.close();
         } catch (Exception e) {
-
+            Log.d("CSV", "Error writing CSV file");
+            e.printStackTrace();
         }
+
         CSVReader.loadCSVFile(
                 startUp.this,
                 "sample.csv",
