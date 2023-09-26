@@ -21,13 +21,12 @@ public class calendarFragment extends Fragment {
 
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.calendarContainer, CalendarDisplayFragment);
-        fragmentTransaction.commit();
-
         FragmentTransaction fragmentTransaction2 = getChildFragmentManager().beginTransaction();
         fragmentTransaction2.replace(R.id.dataFrameContainer, DataDisplayFragment);
         fragmentTransaction2.commit();
+        FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.calendarContainer, CalendarDisplayFragment);
+        fragmentTransaction.commit();
 
     }
 }

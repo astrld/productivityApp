@@ -1,5 +1,6 @@
 package com.example.workoutapp;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.Window;
@@ -32,6 +33,11 @@ public class main extends AppCompatActivity{
     private settingsFragment SettingsFragment = new settingsFragment();
 
     private static final int HOME_FRAGMENT = R.id.homeMenu;
+
+    public static Context getContext() {
+        return getContext();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

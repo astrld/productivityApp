@@ -155,6 +155,11 @@ public class calendarDisplayFragment extends Fragment {
     }
 
     private void updateData(){
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+        String strDate = formatter.format(cal.getTime());
+        System.out.println(strDate);
         dataDisplayFragment.updateDataDisplay(date);
     }
 

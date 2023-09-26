@@ -348,7 +348,7 @@ public class stopwatchFragment extends Fragment{
         date = cal.getTime();
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
         String dateString = sdf.format(date);
-        Database.dbHandler.ifDayExists(dateString,0,chest, abs, back, shoulders, triceps, biceps, legs, cardio);
+        Database.dbHandler.ifDayExists(dateString,0,chest, back, abs, shoulders, triceps, biceps, legs, cardio);
     }
 
 }

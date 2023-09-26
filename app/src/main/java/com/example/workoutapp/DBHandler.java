@@ -11,7 +11,7 @@ public class DBHandler extends SQLiteOpenHelper{
 
     private static final String DB_Name = "userData";
 
-    private static final int DB_VERSION = 2;
+    private static final int DB_VERSION = 5;
 
     private static final String TABLE_NAME = "startData";
 
@@ -240,7 +240,6 @@ public class DBHandler extends SQLiteOpenHelper{
         values.put(DATA_BICEPS_COL, biceps);
         values.put(DATA_LEGS_COL, legs);
         values.put(DATA_CARDIO_COL, cardio);
-
         db.update(DATA_TABLE_NAME, values, DATA_DATE_COL + " = ?", new String[]{date});
         db.close();
     }
