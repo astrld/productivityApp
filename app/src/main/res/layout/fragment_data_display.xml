@@ -1,21 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:background="@color/beige2"
+    android:background="@color/beige"
     android:layout_height="match_parent">
-    <TextView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Data Display"
-        android:textSize="18sp"
-        android:fontFamily="@font/verdana"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:textColor="@color/blue4"
-        android:id="@+id/dataDisplayTextview"
-        />
+        android:layout_height="75dp"
+        android:id="@+id/dataDisplayHeader"
+        >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Data Display"
+            android:textSize="18sp"
+            android:fontFamily="@font/verdana"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/blue4"
+            android:id="@+id/dataDisplayTextview"
+            />
+    </RelativeLayout>
     <com.github.mikephil.charting.charts.BarChart
         android:id="@+id/barChart"
+        android:layout_below="@id/dataDisplayHeader"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </RelativeLayout>

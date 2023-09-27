@@ -112,28 +112,23 @@ public class dataDisplayFragment extends Fragment {
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setGranularity(1f);
         xAxis.setLabelCount(entries.size());
-
         YAxis yAxisLeft = barChart.getAxisLeft();
         YAxis yAxisRight = barChart.getAxisRight();
         yAxisLeft.setAxisMinimum(0f);
         yAxisLeft.setAxisMaximum(120f * days);
-        yAxisRight.setAxisMinimum(0f);
-        yAxisRight.setAxisMaximum(120f * days);
         yAxisLeft.setValueFormatter(new MyYAxisValueFormatter());
-        yAxisRight.setValueFormatter(new MyYAxisValueFormatter());
-
-        // when a bar from the bartable is selected display the value of the bar
+        yAxisRight.setEnabled(false);
         barChart.setOnChartValueSelectedListener(new com.github.mikephil.charting.listener.OnChartValueSelectedListener() {
 
             @Override
             public void onValueSelected(Entry e, Highlight h) {
                 double hoursRounded = Math.round(e.getY() / 60.0 * 100.0) / 100.0;
-                String text = "Mins: " + (int) e.getY() + "\n Hours: " + hoursRounded;
-                Context context = dataDisplayFragment.staticDataDisplayTextview.getContext();
-                Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
+                String text = "Mins: " + (int) e.getY() + "\nHours: " + hoursRounded;
+                staticDataDisplayTextview.setText(text);
             }
             @Override
             public void onNothingSelected() {
+                staticDataDisplayTextview.setText("");
             }
         });
         barChart.invalidate();
