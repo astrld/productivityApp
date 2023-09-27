@@ -56,22 +56,39 @@ public class dataDisplayFragment extends Fragment {
         // Create a list of BarEntry objects representing your data
     }
 
-    public static void updateDataDisplay(Date date) {
+    public static void updateDataDisplay(Date date, int days) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
+        if(days == 7){
+            // first day of week
+            cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+        } else if(days == 30){
+            // first day of month
+            cal.set(Calendar.DAY_OF_MONTH, 1);
+        }
+        int chest = 0;
+        int back = 0;
+        int abs = 0;
+        int shoulders = 0;
+        int triceps = 0;
+        int biceps = 0;
+        int legs = 0;
+        int cardio = 0;
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-        String dateStr = sdf.format(cal.getTime());
-        int chest = Database.getDBHandler().getChest(dateStr);
-        int back = Database.getDBHandler().getBack(dateStr);
-        int abs = Database.getDBHandler().getAbs(dateStr);
-        int shoulders = Database.getDBHandler().getShoulders(dateStr);
-        int triceps = Database.getDBHandler().getTriceps(dateStr);
-        int biceps = Database.getDBHandler().getBiceps(dateStr);
-        int legs = Database.getDBHandler().getLegs(dateStr);
-        int cardio = Database.getDBHandler().getCardio(dateStr);
-        System.out.println("Chest: " + chest + "\n" + "Back: " + back + "\n" + "Abs: " + abs + "\n" + "Shoulders: " + shoulders + "\n" + "Triceps: " + triceps + "\n" + "Biceps: " + biceps + "\n" + "Legs: " + legs + "\n" + "Cardio: " + cardio + "\n");
+        for(int i = 0; i < days; i++) {
+            String dateStr = sdf.format(cal.getTime());
+             chest += Database.getDBHandler().getChest(dateStr);
+             back += Database.getDBHandler().getBack(dateStr);
+             abs += Database.getDBHandler().getAbs(dateStr);
+             shoulders += Database.getDBHandler().getShoulders(dateStr);
+             triceps += Database.getDBHandler().getTriceps(dateStr);
+             biceps += Database.getDBHandler().getBiceps(dateStr);
+             legs += Database.getDBHandler().getLegs(dateStr);
+             cardio += Database.getDBHandler().getCardio(dateStr);
+            cal.add(Calendar.DATE, 1);
+        }
         List<BarEntry> entries = new ArrayList<>();
-        entries.add(new BarEntry(0, chest / 60)); // Convert seconds to minutes
+        entries.add(new BarEntry(0, chest / 60));
         entries.add(new BarEntry(1, back / 60));
         entries.add(new BarEntry(2, abs / 60));
         entries.add(new BarEntry(3, shoulders / 60));
@@ -79,38 +96,26 @@ public class dataDisplayFragment extends Fragment {
         entries.add(new BarEntry(5, biceps / 60));
         entries.add(new BarEntry(6, legs / 60));
         entries.add(new BarEntry(7, cardio / 60));
-        // Add entries for other muscle groups
-
-        // Create a BarDataSet with your entries
         BarDataSet dataSet = new BarDataSet(entries, "");
-        // make R.color.blue2 the color of the bars
-        dataSet.setColor(blue4color); // Customize the color
-
-        // Create a BarData object and set the BarDataSet
+        dataSet.setColor(blue4color);
         BarData barData = new BarData(dataSet);
-
-        // Set the data to your BarChart
         barChart.setData(barData);
-
-        // Customize the appearance of the BarChart
         barChart.getDescription().setEnabled(false);
         barChart.setDrawValueAboveBar(true);
 
-        // Customize the X-axis (muscle groups)
         XAxis xAxis = barChart.getXAxis();
-        xAxis.setValueFormatter(new MyXAxisValueFormatter()); // Implement this formatter
+        xAxis.setValueFormatter(new MyXAxisValueFormatter());
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setGranularity(1f);
         xAxis.setLabelCount(entries.size());
 
-        // Customize the Y-axis (minutes)
         YAxis yAxisLeft = barChart.getAxisLeft();
         YAxis yAxisRight = barChart.getAxisRight();
-        yAxisLeft.setAxisMinimum(0f); // Start from 0
-        yAxisLeft.setAxisMaximum(120f); // 2 hours (adjust as needed)
+        yAxisLeft.setAxisMinimum(0f);
+        yAxisLeft.setAxisMaximum(120f * days);
         yAxisRight.setAxisMinimum(0f);
-        yAxisRight.setAxisMaximum(120f);
-        yAxisLeft.setValueFormatter(new MyYAxisValueFormatter()); // Implement this formatter
+        yAxisRight.setAxisMaximum(120f * days);
+        yAxisLeft.setValueFormatter(new MyYAxisValueFormatter());
         yAxisRight.setValueFormatter(new MyYAxisValueFormatter());
 
         // Refresh the chart

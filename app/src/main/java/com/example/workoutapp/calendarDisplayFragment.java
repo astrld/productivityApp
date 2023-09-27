@@ -1,6 +1,7 @@
 package com.example.workoutapp;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,15 +50,12 @@ public class calendarDisplayFragment extends Fragment {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                String text = adapterView.getItemAtPosition(i).toString();
-                Calendar cal = Calendar.getInstance();
-                date = cal.getTime();
-                updateCalendar(text, date);
+                dateChanged(0);
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-                // do nothing
+                dateChanged(0);
             }
         });
 
@@ -107,10 +105,12 @@ public class calendarDisplayFragment extends Fragment {
                 x = Calendar.DATE;
                 break;
             case "Weeks":
+                cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
                 x = Calendar.WEEK_OF_MONTH;
                 break;
             case "Months":
                 sdf = new SimpleDateFormat("MMM");
+                cal.set(Calendar.DAY_OF_MONTH, 1);
                 x = Calendar.MONTH;
                 break;
         }
@@ -159,8 +159,22 @@ public class calendarDisplayFragment extends Fragment {
         cal.setTime(date);
         SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
         String strDate = formatter.format(cal.getTime());
-        System.out.println(strDate);
-        dataDisplayFragment.updateDataDisplay(date);
+        Log.d("date", strDate);
+        Spinner spinner = getView().findViewById(R.id.spinnerDatePeriod);
+        String text = spinner.getSelectedItem().toString();
+        int x = 0;
+        switch (text){
+            case "Days":
+                x = 1;
+                break;
+            case "Weeks":
+                x = 7;
+                break;
+            case "Months":
+                x = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
+                break;
+        }
+        dataDisplayFragment.updateDataDisplay(date,x);
     }
 
 }
