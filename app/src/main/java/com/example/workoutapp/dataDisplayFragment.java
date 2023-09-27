@@ -1,10 +1,12 @@
 package com.example.workoutapp;
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -16,8 +18,10 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.highlight.Highlight;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -118,7 +122,20 @@ public class dataDisplayFragment extends Fragment {
         yAxisLeft.setValueFormatter(new MyYAxisValueFormatter());
         yAxisRight.setValueFormatter(new MyYAxisValueFormatter());
 
-        // Refresh the chart
+        // when a bar from the bartable is selected display the value of the bar
+        barChart.setOnChartValueSelectedListener(new com.github.mikephil.charting.listener.OnChartValueSelectedListener() {
+
+            @Override
+            public void onValueSelected(Entry e, Highlight h) {
+                double hoursRounded = Math.round(e.getY() / 60.0 * 100.0) / 100.0;
+                String text = "Mins: " + (int) e.getY() + "\n Hours: " + hoursRounded;
+                Context context = dataDisplayFragment.staticDataDisplayTextview.getContext();
+                Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
+            }
+            @Override
+            public void onNothingSelected() {
+            }
+        });
         barChart.invalidate();
     }
 
