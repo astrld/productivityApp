@@ -50,11 +50,17 @@ public class calendarDisplayFragment extends Fragment {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                Calendar cal = Calendar.getInstance();
+                Date tdy = cal.getTime();
+                date = tdy;
                 dateChanged(0);
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
+                Calendar cal = Calendar.getInstance();
+                Date tdy = cal.getTime();
+                date = tdy;
                 dateChanged(0);
             }
         });
