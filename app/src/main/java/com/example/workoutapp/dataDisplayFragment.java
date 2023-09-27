@@ -118,6 +118,7 @@ public class dataDisplayFragment extends Fragment {
         yAxisLeft.setAxisMaximum(120f * days);
         yAxisLeft.setValueFormatter(new MyYAxisValueFormatter());
         yAxisRight.setEnabled(false);
+        barChart.getLegend().setEnabled(false);
         barChart.setOnChartValueSelectedListener(new com.github.mikephil.charting.listener.OnChartValueSelectedListener() {
 
             @Override
