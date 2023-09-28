@@ -61,7 +61,6 @@ public class CSVReader {
                         DBHandler.DATA_TABLE_NAME,
                         null,
                         contentValues);
-                Log.d("CSV Insert", "Inserting: " + contentValues);
             }
         } catch (IOException e) {
             throw new RuntimeException(e);

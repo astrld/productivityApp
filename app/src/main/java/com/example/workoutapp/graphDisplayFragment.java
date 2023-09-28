@@ -11,7 +11,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
-import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
@@ -19,8 +18,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-public class calendarDisplayFragment extends Fragment {
-
+public class graphDisplayFragment extends Fragment {
     private Spinner spinner;
 
     private Button day1, day2, day3, day4, day5;
@@ -37,7 +35,8 @@ public class calendarDisplayFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         spinner = view.findViewById(R.id.spinnerDatePeriod);
-        Adapter adapter = new ArrayAdapter<>(getActivity(), R.layout.spinner_item, getResources().getStringArray(R.array.spinner_array));
+        String[] array = {"Weeks", "Months"};
+        Adapter adapter = new ArrayAdapter<>(getActivity(), R.layout.spinner_item, array);
         spinner.setAdapter((SpinnerAdapter) adapter);
         ((ArrayAdapter<?>) adapter).setDropDownViewResource(R.layout.spinner_item);
         spinner.setPopupBackgroundDrawable(getResources().getDrawable(R.color.blue2));
@@ -161,7 +160,7 @@ public class calendarDisplayFragment extends Fragment {
         updateData();
     }
 
-    private void updateData(){
+    private void updateData() {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
@@ -171,9 +170,6 @@ public class calendarDisplayFragment extends Fragment {
         String text = spinner.getSelectedItem().toString();
         int x = 0;
         switch (text) {
-            case "Days":
-                x = 1;
-                break;
             case "Weeks":
                 x = 7;
                 break;
@@ -181,7 +177,6 @@ public class calendarDisplayFragment extends Fragment {
                 x = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
                 break;
         }
-        dataDisplayFragment.updateDataDisplay(date,x);
+        graphFragment.updateMuscleGroupGraph(date, text, x);
     }
-
 }

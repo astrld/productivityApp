@@ -9,7 +9,8 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="80dp">
+        android:id="@+id/graphLL"
+        android:layout_height="wrap_content">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="32sp"
@@ -21,5 +22,28 @@
             android:textColor="@color/blue4"
             />
     </LinearLayout>
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/graphLL"
+        android:id="@+id/graphButtonsFrameLayout"
+        />
+    <com.github.mikephil.charting.charts.LineChart
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/WeightlineChart"
+        android:layout_below="@id/graphButtonsFrameLayout"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="20dp"
+        />
+
+    <com.github.mikephil.charting.charts.LineChart
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/muscleGroupLineChart"
+        android:layout_below="@id/WeightlineChart"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="20dp"
+        />
 
 </RelativeLayout>

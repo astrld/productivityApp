@@ -132,6 +132,7 @@ public class dataDisplayFragment extends Fragment {
                 staticDataDisplayTextview.setText("");
             }
         });
+        staticDataDisplayTextview.setText("");
         barChart.invalidate();
     }
 
