@@ -1,0 +1,55 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/weight_scale_background"
+    android:layout_height="wrap_content">
+
+    <com.marcinmoskala.arcseekbar.ArcSeekBar
+        android:layout_width="150dp"
+        android:layout_centerInParent="true"
+        android:id="@+id/weightScale"
+        app:progress="0"
+        app:maxProgress="250"
+        app:progressColor="@color/blue4"
+        app:progressBackgroundColor="@color/beige2"
+        app:thumb="@drawable/weight_scale_thumb"
+        android:layout_height="100dp" />
+
+    <!-- Buttons for Adjusting Weight -->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/weightDecreaseButton"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_toStartOf="@id/weightScale"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="30dp"
+        android:background="@drawable/plusminusbutton"
+        android:text="@string/minusSign"
+        android:textColor="@color/beige"
+        />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/weightIncreaseButton"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@id/weightScale"
+        android:layout_marginStart="30dp"
+        android:background="@drawable/plusminusbutton"
+        android:textColor="@color/beige"
+        android:text="+"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="18sp"
+        android:fontFamily="@font/verdana"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:textColor="@color/blue4"
+        android:id="@+id/weightDisplay"
+        android:layout_centerInParent="true"
+        />
+</RelativeLayout>

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,6 +48,7 @@ public class stopwatchFragment extends Fragment{
         Database.dbHandler.addStopwatchData("0", "Chest", "0");
         timer = getView().findViewById(R.id.stopwatchTextview);
         recyclerView = getView().findViewById(R.id.recyclerView);
+
         layoutManager = new ZoomCenterLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
         muscleGroup = getView().findViewById(R.id.muscleGroup);
@@ -101,6 +103,25 @@ public class stopwatchFragment extends Fragment{
                     seconds = 0;
                     timer.setText("00:00:00");
                     Database.dbHandler.updateStopwatchData("0", "Chest", "0");
+                }
+            }
+        });
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState){
+                super.onScrollStateChanged(recyclerView, newState);
+                if(newState == RecyclerView.SCROLL_STATE_IDLE){
+                    int position = layoutManager.findFirstVisibleItemPosition() + 1;
+                    updateMuscleGroupText(position);
+                    if(userScrolled){
+                        running = false;
+                        pausePlayButton.setImageResource(R.drawable.play);
+                        addData();
+                        seconds = 0;
+                        timer.setText("00:00:00");
+                        Database.dbHandler.updateStopwatchData("0", "Chest", "0");
+                    }
                 }
             }
         });
@@ -315,6 +336,9 @@ public class stopwatchFragment extends Fragment{
     }
 
     private void addData(){
+        if(seconds == 0){
+            return;
+        }
         String muscleGroupText = muscleGroup.getText().toString();
         int chest = 0; int abs = 0; int back = 0; int shoulders = 0; int triceps = 0; int biceps = 0; int legs = 0; int cardio = 0;
         switch (muscleGroupText){

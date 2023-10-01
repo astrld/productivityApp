@@ -18,6 +18,8 @@ public class homeFragment extends Fragment {
     private TextView displayName;
 
     private stopwatchFragment StopwatchFragment = new stopwatchFragment();
+
+    private weightScale WeightScale = new weightScale();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -31,6 +33,9 @@ public class homeFragment extends Fragment {
         FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.stopwatchContainer, StopwatchFragment);
         fragmentTransaction.commit();
+        FragmentTransaction fragmentTransaction2 = getChildFragmentManager().beginTransaction();
+        fragmentTransaction2.replace(R.id.scaleContainer, WeightScale);
+        fragmentTransaction2.commit();
     }
 
 }

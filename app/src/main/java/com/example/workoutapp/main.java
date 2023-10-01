@@ -2,6 +2,7 @@ package com.example.workoutapp;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
@@ -34,6 +35,8 @@ public class main extends AppCompatActivity{
 
     private static final int HOME_FRAGMENT = R.id.homeMenu;
 
+    private Vibrator vibrator;
+
     public static Context getContext() {
         return getContext();
     }
@@ -45,12 +48,13 @@ public class main extends AppCompatActivity{
         setStatusBarColor(R.color.beige);
         dbHandler = Database.getDBHandler();
         bottomNavigationView = findViewById(R.id.bottom_navigation);
+        vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
 
         getSupportFragmentManager().beginTransaction().replace(R.id.container, HomeFragment).commit();
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
-                // should get it from @menu/bottom_navigation_menu
+                vibrator.vibrate(5);
                 if(item.getItemId() == R.id.homeMenu){
                     getSupportFragmentManager().beginTransaction().replace(R.id.container, HomeFragment).commit();
                     currentTab = "home";

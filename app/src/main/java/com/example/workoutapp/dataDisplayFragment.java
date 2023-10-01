@@ -54,10 +54,10 @@ public class dataDisplayFragment extends Fragment {
 
         // Initialize your BarChart
         BarChart barChart = view.findViewById(R.id.barChart);
+        barChart.setNoDataTextColor(blue4color);
+        barChart.setNoDataText("Loading...");
         dataDisplayFragment.barChart = barChart;
         blue4color = ContextCompat.getColor(getContext(), R.color.blue4);
-
-        // Create a list of BarEntry objects representing your data
     }
 
     public static void updateDataDisplay(Date date, int days) {

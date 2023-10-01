@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/beige"
-
+    android:id="@+id/graphFragmentRelativeLayout"
     tools:context=".graphFragment">
 
     <LinearLayout
@@ -28,22 +28,44 @@
         android:layout_below="@id/graphLL"
         android:id="@+id/graphButtonsFrameLayout"
         />
-    <com.github.mikephil.charting.charts.LineChart
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/WeightlineChart"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_below="@id/graphButtonsFrameLayout"
         android:layout_marginBottom="20dp"
         android:layout_marginTop="20dp"
-        />
-
-    <com.github.mikephil.charting.charts.LineChart
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/muscleGroupLineChart"
-        android:layout_below="@id/WeightlineChart"
-        android:layout_marginBottom="20dp"
-        android:layout_marginTop="20dp"
-        />
+        android:weightSum="2"
+        android:orientation="vertical"
+        >
+        <com.github.mikephil.charting.charts.LineChart
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:id="@+id/WeightlineChart"
+            />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:background="@drawable/backgroundforscrollthing"
+            android:layout_height="79dp">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/linegraphrecyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="75dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="2dp"
+                android:background="@color/beige2"
+                android:clipToPadding="false"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:overScrollMode="never"/>
+        </RelativeLayout>
+        <com.github.mikephil.charting.charts.LineChart
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:id="@+id/muscleGroupLineChart"
+            />
+    </LinearLayout>
 
 </RelativeLayout>

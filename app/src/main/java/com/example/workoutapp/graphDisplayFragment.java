@@ -9,6 +9,7 @@ import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 
@@ -24,7 +25,6 @@ public class graphDisplayFragment extends Fragment {
     private Button day1, day2, day3, day4, day5;
 
     public static Date date;
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -165,7 +165,6 @@ public class graphDisplayFragment extends Fragment {
         cal.setTime(date);
         SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
         String strDate = formatter.format(cal.getTime());
-        Log.d("date", strDate);
         Spinner spinner = getView().findViewById(R.id.spinnerDatePeriod);
         String text = spinner.getSelectedItem().toString();
         int x = 0;
@@ -177,6 +176,6 @@ public class graphDisplayFragment extends Fragment {
                 x = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
                 break;
         }
-        graphFragment.updateMuscleGroupGraph(date, text, x);
+        graphFragment.updateGraphs(date, text, x);
     }
 }

@@ -166,7 +166,6 @@ public class calendarDisplayFragment extends Fragment {
         cal.setTime(date);
         SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
         String strDate = formatter.format(cal.getTime());
-        Log.d("date", strDate);
         Spinner spinner = getView().findViewById(R.id.spinnerDatePeriod);
         String text = spinner.getSelectedItem().toString();
         int x = 0;
@@ -182,6 +181,13 @@ public class calendarDisplayFragment extends Fragment {
                 break;
         }
         dataDisplayFragment.updateDataDisplay(date,x);
+//        int finalX = x;
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                dataDisplayFragment.updateDataDisplay(date, finalX);
+//            }
+//        }).start();
     }
 
 }

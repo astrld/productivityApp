@@ -7,6 +7,10 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 public class DBHandler extends SQLiteOpenHelper{
 
     private static final String DB_Name = "userData";
@@ -155,7 +159,7 @@ public class DBHandler extends SQLiteOpenHelper{
         db.close();
     }
 
-    public void ifDayExists(String date, int weight, int chest, int back, int abs, int shoulders, int triceps, int biceps, int legs, int cardio){
+    public void ifDayExists(String date, double weight, int chest, int back, int abs, int shoulders, int triceps, int biceps, int legs, int cardio){
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "SELECT * FROM " + DATA_TABLE_NAME + " WHERE " + DATA_DATE_COL + " = '" + date + "'";
         Cursor cursor = db.rawQuery(query, null);
@@ -167,7 +171,7 @@ public class DBHandler extends SQLiteOpenHelper{
         cursor.close();
     }
 
-    public void newDay(String date, int weight, int chest, int back, int abs, int shoulders, int triceps, int biceps, int legs, int cardio){
+    public void newDay(String date, double weight, int chest, int back, int abs, int shoulders, int triceps, int biceps, int legs, int cardio){
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -188,7 +192,7 @@ public class DBHandler extends SQLiteOpenHelper{
         db.close();
     }
 
-    public void updateDay(String date, int weight, int chest, int back, int abs, int shoulders, int triceps, int biceps, int legs, int cardio){
+    public void updateDay(String date, double weight, int chest, int back, int abs, int shoulders, int triceps, int biceps, int legs, int cardio){
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -453,6 +457,56 @@ public class DBHandler extends SQLiteOpenHelper{
         return weight;
     }
 
+    public String getCurrentWeight(Date date) {
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+        String dateString = sdf.format(date);
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT " + DATA_WEIGHT_COL + " FROM " + DATA_TABLE_NAME + " WHERE " + DATA_DATE_COL + " <= ? ORDER BY " + DATA_DATE_COL + " DESC LIMIT 1";
+        Cursor cursor = db.rawQuery(query, new String[]{dateString});
+
+        String weight = "";
+        double weightDouble = 0;
+
+        if (cursor.moveToFirst()) {
+            weight = cursor.getString(0);
+            weightDouble = Double.parseDouble(weight);
+        }
+
+        while (weightDouble == 0) {
+            if (cursor.moveToNext()) {
+                weight = cursor.getString(0);
+                weightDouble = Double.parseDouble(weight);
+            } else {
+                // Get it from the start data
+                weight = getWeight();
+                weightDouble = Double.parseDouble(weight);
+            }
+        }
+
+        weight = String.valueOf(weightDouble);
+        cursor.close();
+        return weight;
+    }
+
+
+    public String getWeightGivenDate(Date date){
+        SQLiteDatabase db = this.getWritableDatabase();
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+        String dateString = sdf.format(date);
+        String query = "SELECT " + DATA_WEIGHT_COL + " FROM " + DATA_TABLE_NAME + " WHERE " + DATA_DATE_COL + " = '" + dateString + "'";
+        Cursor cursor = db.rawQuery(query, null);
+        String weight = "";
+        if (cursor.moveToFirst()) {
+            weight = cursor.getString(0);
+        }
+        cursor.close();
+        if(weight.equals("") || weight.equals("0") || weight.equals("0.0") || weight.equals("0.00")){
+            weight = getCurrentWeight(date);
+        }
+        return weight;
+    }
+
     public String getWeightMetric() {
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "SELECT " + WEIGHT_METRIC_COL + " FROM " + TABLE_NAME;
@@ -463,6 +517,45 @@ public class DBHandler extends SQLiteOpenHelper{
         }
         cursor.close();
         return weightMetric;
+    }
+
+    public String getWeightUnits(){
+        boolean metric = Boolean.parseBoolean(getWeightMetric());
+        if(metric){
+            return "kg";
+        } else {
+            return "lbs";
+        }
+    }
+
+    public String getHeightUnits(){
+        boolean metric = Boolean.parseBoolean(getHeightMetric());
+        if(metric){
+            return "cm";
+        } else {
+            return "in";
+        }
+    }
+
+    public double getBMI(double weight){
+        boolean weightmetric = Boolean.parseBoolean(getWeightMetric());
+        boolean heightmetric = Boolean.parseBoolean(getHeightMetric());
+        double bmi = 0;
+        double weightMetric = 0;
+        double heightMetric = 0;
+        double height = Double.parseDouble(getHeight());
+        if(weightmetric){
+            weightMetric = weight;
+        } else {
+            weightMetric = weight * .453592;
+        }
+        if(heightmetric){
+            heightMetric = height * .01;
+        } else {
+            heightMetric = height * 0.0254;
+        }
+        bmi = weightMetric / (heightMetric * heightMetric);
+        return bmi;
     }
 
     public String getGoalWeight() {
@@ -488,7 +581,6 @@ public class DBHandler extends SQLiteOpenHelper{
         cursor.close();
         return goalWeightMetric;
     }
-
 
 
     public boolean checkEmpty() {
