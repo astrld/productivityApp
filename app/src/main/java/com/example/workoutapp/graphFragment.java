@@ -201,7 +201,6 @@ public class graphFragment extends Fragment {
         public ZoomCenterLayoutManager(Context context) {
             super(context);
             setOrientation(LinearLayoutManager.HORIZONTAL);
-
         }
 
         @Override
@@ -268,6 +267,14 @@ public class graphFragment extends Fragment {
         LineData lineData = new LineData();
         lineData.addDataSet(weightDataSet);
         lineData.addDataSet(bmiDataSet);
+        double goalWeight = Double.parseDouble(Database.getDBHandler().getGoalWeight());
+        if (goalWeight > 0) {
+            List<Entry> goalWeightEntries = new ArrayList<>();
+            goalWeightEntries.add(new Entry(0, (float) goalWeight));
+            goalWeightEntries.add(new Entry(days, (float) goalWeight));
+            LineDataSet goalWeightDataSet = createLineDataSet(blue3color, goalWeightEntries, "Goal Weight");
+            lineData.addDataSet(goalWeightDataSet);
+        }
         staticWeightLineChart.setData(lineData);
         staticWeightLineChart.getDescription().setEnabled(false);
         staticWeightLineChart.setDrawMarkers(false);
@@ -286,7 +293,6 @@ public class graphFragment extends Fragment {
         List<Entry> bicepsEntries = new ArrayList<>();
         List<Entry> legsEntries = new ArrayList<>();
         List<Entry> cardioEntries = new ArrayList<>();
-
         if(period.equals("Weeks")){
             Calendar cal = Calendar.getInstance();
             cal.setTime(date);
@@ -313,31 +319,14 @@ public class graphFragment extends Fragment {
             int bicepsValue = Database.getDBHandler().getBiceps(formattedDate)/60;
             int legsValue = Database.getDBHandler().getLegs(formattedDate)/60;
             int cardioValue = Database.getDBHandler().getCardio(formattedDate)/60;
-
-            if (chestValue > 0) {
-                chestEntries.add(new Entry(i, chestValue));
-            }
-            if (backValue > 0) {
-                backEntries.add(new Entry(i, backValue));
-            }
-            if (absValue > 0) {
-                absEntries.add(new Entry(i, absValue));
-            }
-            if (shouldersValue > 0) {
-                shouldersEntries.add(new Entry(i, shouldersValue));
-            }
-            if (tricepsValue > 0) {
-                tricepsEntries.add(new Entry(i, tricepsValue));
-            }
-            if (bicepsValue > 0) {
-                bicepsEntries.add(new Entry(i, bicepsValue));
-            }
-            if (legsValue > 0) {
-                legsEntries.add(new Entry(i, legsValue));
-            }
-            if (cardioValue > 0) {
-                cardioEntries.add(new Entry(i, cardioValue));
-            }
+            chestEntries.add(new Entry(i, chestValue));
+            backEntries.add(new Entry(i, backValue));
+            absEntries.add(new Entry(i, absValue));
+            shouldersEntries.add(new Entry(i, shouldersValue));
+            tricepsEntries.add(new Entry(i, tricepsValue));
+            bicepsEntries.add(new Entry(i, bicepsValue));
+            legsEntries.add(new Entry(i, legsValue));
+            cardioEntries.add(new Entry(i, cardioValue));
         }
         LineDataSet dataSet = null;
         switch (position) {
@@ -368,7 +357,6 @@ public class graphFragment extends Fragment {
         }
         LineData lineData = new LineData();
         lineData.addDataSet(dataSet);
-
         staticMuscleLineChart.setData(lineData);
         staticMuscleLineChart.getDescription().setEnabled(false);
 
