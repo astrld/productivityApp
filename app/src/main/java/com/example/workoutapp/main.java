@@ -29,8 +29,6 @@ public class main extends AppCompatActivity{
 
     private graphFragment GraphFragment = new graphFragment();
 
-    private profileFragment ProfileFragment = new profileFragment();
-
     private settingsFragment SettingsFragment = new settingsFragment();
 
     private static final int HOME_FRAGMENT = R.id.homeMenu;
@@ -64,9 +62,6 @@ public class main extends AppCompatActivity{
                 } else if(item.getItemId() == R.id.graphMenu){
                     getSupportFragmentManager().beginTransaction().replace(R.id.container, GraphFragment).commit();
                     currentTab = "graph";
-                } else if(item.getItemId() == R.id.profileMenu){
-                    getSupportFragmentManager().beginTransaction().replace(R.id.container, ProfileFragment).commit();
-                    currentTab = "profile";
                 } else if(item.getItemId() == R.id.settingsMenu){
                     getSupportFragmentManager().beginTransaction().replace(R.id.container, SettingsFragment).commit();
                     currentTab = "settings";

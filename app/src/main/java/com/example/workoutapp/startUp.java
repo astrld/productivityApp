@@ -562,7 +562,9 @@ public class startUp extends AppCompatActivity {
     }
 
     public void changeToMain(){
-        // new intent to switch to main
+        if(dbHandler.checkIfReminderExists()){
+           dbHandler.addReminderData("false", "6:00");
+        }
         Intent intent = new Intent(this, main.class);
         startActivity(intent);
     }

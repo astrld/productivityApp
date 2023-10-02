@@ -13,10 +13,6 @@
         android:title="Graph"
         android:icon="@drawable/linechart"/>
 
-    <item android:id="@+id/profileMenu"
-        android:title="Profile"
-        android:icon="@drawable/profile"/>
-
     <item android:id="@+id/settingsMenu"
         android:title="Settings"
         android:icon="@drawable/settings"/>

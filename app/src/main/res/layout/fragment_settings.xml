@@ -1,23 +1,238 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:background="@color/beige"
     android:layout_height="match_parent"
-    tools:context=".settingsFragment">
+    android:padding="5dp">
 
     <LinearLayout
+        android:id="@+id/settings_title_layout"
         android:layout_width="match_parent"
-        android:layout_height="80dp">
+        android:layout_height="wrap_content">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="32sp"
             android:text="Settings"
             android:textSize="18sp"
-            android:fontFamily="@font/verdana"
+            android:fontFamily="sans-serif"
             android:textStyle="bold"
             android:gravity="center"
             android:textColor="@color/blue4"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/height_options_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/settings_title_layout"
+        android:orientation="horizontal"
+        android:padding="8dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Height"
+            android:textStyle="bold"
+            android:textSize="24sp"
+            android:gravity="start|center_vertical"
+            android:textColor="@color/blue4"
+            />
+
+        <RadioGroup
+            android:id="@+id/radio_group_height"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:orientation="horizontal"
+            android:checkedButton="@+id/radio_cm">
+
+            <RadioButton
+                android:id="@+id/radio_cm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="cm"
+                android:textSize="14sp"
+                android:textColor="@color/blue4"
+                android:buttonTintMode="@color/blue4"
+                />
+
+            <RadioButton
+                android:id="@+id/radio_feet_inches"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="feet/inches"
+                android:textSize="14sp"
+                android:buttonTintMode="@color/blue4"
+                android:textColor="@color/blue4"
+                />
+        </RadioGroup>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/height_fields_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/height_options_layout"
+        android:orientation="horizontal"
+        android:padding="8dp"
+        android:visibility="visible">
+
+        <EditText
+            android:id="@+id/edit_text_height_feet"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Feet"
+            android:inputType="number"
+            android:textSize="14sp"
+            android:textColor="@color/blue4"
+            android:backgroundTint="@color/blue4"
+            android:textColorHint="@color/black"
+            />
+
+        <EditText
+            android:id="@+id/edit_text_height_inches"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Inches"
+            android:inputType="number"
+            android:textSize="14sp"
+            android:textColor="@color/blue4"
+            android:backgroundTint="@color/blue4"
+            android:textColorHint="@color/black"
+            />
+
+        <EditText
+            android:id="@+id/edit_text_height_cm"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="cm"
+            android:inputType="number"
+            android:textSize="14sp"
+            android:textColor="@color/blue4"
+            android:backgroundTint="@color/blue4"
+            android:textColorHint="@color/black"
+            />
+    </LinearLayout>
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/height_fields_layout"
+        android:orientation="vertical"
+        android:id="@+id/goal_weight_options_layout"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/height_fields_layout"
+            android:orientation="horizontal"
+            android:padding="8dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Goal Weight"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:gravity="start|center_vertical"
+                android:textColor="@color/blue4"
+                />
+
+            <RadioGroup
+                android:id="@+id/radio_group_goal_weight"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:orientation="horizontal"
+                android:checkedButton="@+id/radio_kg">
+
+                <RadioButton
+                    android:id="@+id/radio_kg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="kg"
+                    android:textSize="14sp"
+                    android:buttonTintMode="@color/blue4"
+                    android:textColor="@color/blue4"
+                    />
+
+                <RadioButton
+                    android:id="@+id/radio_lb"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="lb"
+                    android:textSize="14sp"
+                    android:buttonTintMode="@color/blue4"
+                    android:textColor="@color/blue4"
+                    />
+            </RadioGroup>
+        </LinearLayout>
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:hint="Enter Weight"
+            android:inputType="number"
+            android:textSize="16sp"
+            android:textColor="@color/blue4"
+            android:backgroundTint="@color/blue4"
+            android:textColorHint="@color/black"
+            android:id="@+id/edit_text_goal_weight"
+            />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+    <LinearLayout
+        android:id="@+id/notification_settings_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/goal_weight_options_layout"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="8dp"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Notifications"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:gravity="start|center_vertical"
+                android:textColor="@color/blue4"
+                />
+            <Switch
+                android:id="@+id/notification_switch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:paddingTop="8dp"
+                android:checked="true"
+                android:textColor="@color/blue4"
+                android:thumbTint="@color/blue4"
+                android:trackTint="@color/blue4"
+                />
+        </LinearLayout>
+
+        <TimePicker
+            android:id="@+id/notification_time_picker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:visibility="visible"
+            android:textColor="@color/blue4"
+            android:headerBackground="@color/blue2"
+            android:numbersTextColor="@color/black"
+            android:numbersSelectorColor="@color/semi_transparent_background_color"
+            android:numbersBackgroundColor="@color/beige2"
+            android:numbersInnerTextColor="@color/black"
             />
     </LinearLayout>
 

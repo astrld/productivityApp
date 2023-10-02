@@ -15,7 +15,7 @@ public class DBHandler extends SQLiteOpenHelper{
 
     private static final String DB_Name = "userData";
 
-    private static final int DB_VERSION = 5;
+    private static final int DB_VERSION = 10; // highest has been 5
 
     private static final String TABLE_NAME = "startData";
 
@@ -54,7 +54,9 @@ public class DBHandler extends SQLiteOpenHelper{
     public static final String DATA_LEGS_COL = "dataLegsCol";
     public static final String DATA_CARDIO_COL = "dataCardioCol";
 
-
+    public static final String REMINDER_TABLE_NAME = "reminderTable";
+    public static final String REMINDER_ENABLED_COL = "reminderEnabledCol";
+    public static final String REMINDER_TIME_COL = "reminderTimeCol";
 
 
 
@@ -94,6 +96,74 @@ public class DBHandler extends SQLiteOpenHelper{
                 + DATA_LEGS_COL + " INTEGER,"
                 + DATA_CARDIO_COL + " INTEGER)";
         db.execSQL(data);
+
+        String reminderEnabled = "CREATE TABLE " + REMINDER_TABLE_NAME + " ("
+                + REMINDER_ENABLED_COL + " TEXT,"
+                + REMINDER_TIME_COL + " TEXT)";
+        db.execSQL(reminderEnabled);
+    }
+
+    public void addReminderData(String enabled, String time){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        values.put(REMINDER_ENABLED_COL, enabled);
+        values.put(REMINDER_TIME_COL, time);
+
+        db.insert(REMINDER_TABLE_NAME, null, values);
+        db.close();
+    }
+
+    public void updateReminderData(String enabled, String time){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        values.put(REMINDER_ENABLED_COL, enabled);
+        values.put(REMINDER_TIME_COL, time);
+
+        db.update(REMINDER_TABLE_NAME, values, null, null);
+        db.close();
+    }
+
+    public boolean checkIfReminderExists(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT * FROM " + REMINDER_TABLE_NAME;
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor.getCount() <= 0) {
+            cursor.close();
+            return true;
+        }
+        cursor.close();
+        return false;
+    }
+
+    public String getReminderTime(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT " + REMINDER_TIME_COL + " FROM " + REMINDER_TABLE_NAME;
+        Cursor cursor = db.rawQuery(query, null);
+        String time = "";
+        if (cursor.moveToFirst()) {
+            time = cursor.getString(0);
+        }
+        cursor.close();
+        return time;
+    }
+
+    public boolean getReminderEnabled(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT " + REMINDER_ENABLED_COL + " FROM " + REMINDER_TABLE_NAME;
+        Cursor cursor = db.rawQuery(query, null);
+        String enabled = "";
+        if (cursor.moveToFirst()) {
+            enabled = cursor.getString(0);
+        }
+        cursor.close();
+        if(enabled.equals("true")){
+            return true;
+        }
+        return false;
     }
 
     public void addDataToStart(String firstName, String lastName, String height, String heightMetric, String weight, String weightMetric, String goalWeight, String goalWeightMetric) {
@@ -144,6 +214,18 @@ public class DBHandler extends SQLiteOpenHelper{
 
         db.insert(STOPWATCH_TABLE_NAME, null, values);
         db.close();
+    }
+
+    public boolean ifStopwatchExists(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT * FROM " + STOPWATCH_TABLE_NAME;
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor.getCount() <= 0) {
+            cursor.close();
+            return false;
+        }
+        cursor.close();
+        return true;
     }
 
     public void updateStopwatchData(String seconds, String muscleGroup, String closingTime){

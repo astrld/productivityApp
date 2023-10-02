@@ -45,7 +45,11 @@ public class stopwatchFragment extends Fragment{
         super.onViewCreated(view, savedInstanceState);
         pausePlayButton = getView().findViewById(R.id.playpause);
         stopButton = getView().findViewById(R.id.stop);
-        Database.dbHandler.addStopwatchData("0", "Chest", "0");
+        if(Database.dbHandler.ifStopwatchExists()){
+            Database.dbHandler.addStopwatchData("0", "Chest", "0");
+        } else {
+            Database.dbHandler.updateStopwatchData("0", "Chest", "0");
+        }
         timer = getView().findViewById(R.id.stopwatchTextview);
         recyclerView = getView().findViewById(R.id.recyclerView);
 
@@ -76,36 +80,36 @@ public class stopwatchFragment extends Fragment{
                 outRect.right = itemSpacing / 2;
             }
         });
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                int center = layoutManager.getWidth() / 2;
-                View closestChild = null;
-                int closestDistance = Integer.MAX_VALUE;
-                for (int i = 0; i < layoutManager.getChildCount(); i++) {
-                    View child = layoutManager.getChildAt(i);
-                    if(child != null) {
-                        int childCenter = (layoutManager.getDecoratedRight(child) + layoutManager.getDecoratedLeft(child)) / 2;
-                        int distance = Math.abs(center - childCenter);
-                        if (distance < closestDistance) {
-                            closestDistance = distance;
-                            closestChild = child;
-                        }
-                    }
-                }
-                int position = recyclerView.getChildLayoutPosition(closestChild);
-                updateMuscleGroupText(position);
-                if(userScrolled){
-                    running = false;
-                    pausePlayButton.setImageResource(R.drawable.play);
-                    addData();
-                    seconds = 0;
-                    timer.setText("00:00:00");
-                    Database.dbHandler.updateStopwatchData("0", "Chest", "0");
-                }
-            }
-        });
+//        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//            @Override
+//            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+//                super.onScrolled(recyclerView, dx, dy);
+//                int center = layoutManager.getWidth() / 2;
+//                View closestChild = null;
+//                int closestDistance = Integer.MAX_VALUE;
+//                for (int i = 0; i < layoutManager.getChildCount(); i++) {
+//                    View child = layoutManager.getChildAt(i);
+//                    if(child != null) {
+//                        int childCenter = (layoutManager.getDecoratedRight(child) + layoutManager.getDecoratedLeft(child)) / 2;
+//                        int distance = Math.abs(center - childCenter);
+//                        if (distance < closestDistance) {
+//                            closestDistance = distance;
+//                            closestChild = child;
+//                        }
+//                    }
+//                }
+//                int position = recyclerView.getChildLayoutPosition(closestChild);
+//                updateMuscleGroupText(position);
+//                if(userScrolled){
+//                    running = false;
+//                    pausePlayButton.setImageResource(R.drawable.play);
+//                    addData();
+//                    seconds = 0;
+//                    timer.setText("00:00:00");
+//                    Database.dbHandler.updateStopwatchData("0", "Chest", "0");
+//                }
+//            }
+//        });
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
