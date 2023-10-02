@@ -1,6 +1,9 @@
 package com.example.workoutapp;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.view.MenuItem;
@@ -10,6 +13,7 @@ import android.widget.TextView;
 
 import androidx.annotation.ColorRes;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
@@ -47,6 +51,15 @@ public class main extends AppCompatActivity{
         dbHandler = Database.getDBHandler();
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "Workout Channel";
+            String description = "Channel for workout notifications";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel("workout_channel", name, importance);
+            channel.setDescription(description);
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel); // Use getSystemService here
+        }
 
         getSupportFragmentManager().beginTransaction().replace(R.id.container, HomeFragment).commit();
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {

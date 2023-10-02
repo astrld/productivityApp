@@ -15,7 +15,7 @@ public class DBHandler extends SQLiteOpenHelper{
 
     private static final String DB_Name = "userData";
 
-    private static final int DB_VERSION = 10; // highest has been 5
+    private static final int DB_VERSION = 6; // highest has been 5
 
     private static final String TABLE_NAME = "startData";
 
@@ -67,7 +67,7 @@ public class DBHandler extends SQLiteOpenHelper{
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String startData = "CREATE TABLE " + TABLE_NAME + " ("
+        String startData = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " ("
                 + FIRST_NAME_COL + " TEXT,"
                 + LAST_NAME_COL + " TEXT,"
                 + HEIGHT_COL + " TEXT,"
@@ -78,13 +78,13 @@ public class DBHandler extends SQLiteOpenHelper{
                 + GOAL_WEIGHT_METRIC_COL + " TEXT)";
         db.execSQL(startData);
 
-        String stopwatchQuery = "CREATE TABLE " + STOPWATCH_TABLE_NAME + " ("
+        String stopwatchQuery = "CREATE TABLE IF NOT EXISTS " + STOPWATCH_TABLE_NAME + " ("
                 + STOPWATCH_SECONDS_COL + " TEXT,"
                 + STOPWATCH_MUSCLE_GROUP_COL + " TEXT,"
                 + STOPWATCH_CLOSING_TIME_COL + " TEXT)";
         db.execSQL(stopwatchQuery);
 
-        String data = "CREATE TABLE " + DATA_TABLE_NAME + " ("
+        String data = "CREATE TABLE IF NOT EXISTS " + DATA_TABLE_NAME + " ("
                 + DATA_DATE_COL + " TEXT,"
                 + DATA_WEIGHT_COL + " INTEGER,"
                 + DATA_CHEST_COL + " INTEGER,"
@@ -97,7 +97,7 @@ public class DBHandler extends SQLiteOpenHelper{
                 + DATA_CARDIO_COL + " INTEGER)";
         db.execSQL(data);
 
-        String reminderEnabled = "CREATE TABLE " + REMINDER_TABLE_NAME + " ("
+        String reminderEnabled = "CREATE TABLE IF NOT EXISTS " + REMINDER_TABLE_NAME + " ("
                 + REMINDER_ENABLED_COL + " TEXT,"
                 + REMINDER_TIME_COL + " TEXT)";
         db.execSQL(reminderEnabled);

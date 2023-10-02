@@ -1,7 +1,16 @@
 package com.example.workoutapp;
 
+import android.app.AlarmManager;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -13,9 +22,15 @@ import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.TimePicker;
 
+import java.util.Calendar;
+
 public class settingsFragment extends Fragment {
 
     private RadioGroup heightRadioGroup, weightRadioGroup;
+
+    private static final int MY_PERMISSIONS_REQUEST_SCHEDULE_EXACT_ALARM = 123;
+    private static final String SCHEDULE_EXACT_ALARM = "android.permission.SCHEDULE_EXACT_ALARM";
+
 
     private RadioButton heightRadioCM, heightRadioIN, weightRadioKG, weightRadioLB;
 
@@ -182,14 +197,77 @@ public class settingsFragment extends Fragment {
                 bool = "true";
             }
             Database.dbHandler.updateReminderData(bool,time);
+            scheduleNotification();
         });
 
         notifcationSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             String bool = "false";
             if(isChecked){
                 bool = "true";
+                scheduleNotification();
+            } else {
+                cancelNotificationAlarm();
             }
             Database.dbHandler.updateReminderData(bool,Database.dbHandler.getReminderTime());
         });
+
     }
+    private void cancelNotificationAlarm() {
+        Intent intent = new Intent(getContext(), NotificationReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                getContext(),
+                0,
+                intent,
+                PendingIntent.FLAG_IMMUTABLE
+        );
+        AlarmManager alarmManager = (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
+
+        // Cancel the alarm
+        alarmManager.cancel(pendingIntent);
+
+        // Remove any existing notifications
+        NotificationManager notificationManager = (NotificationManager) getContext().getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.cancel(0);
+    }
+
+    private void scheduleNotification() {
+        int hour = notificationTime.getHour();
+        int minute = notificationTime.getMinute();
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, hour);
+        calendar.set(Calendar.MINUTE, minute);
+        calendar.set(Calendar.SECOND, 0);
+
+        if (calendar.before(Calendar.getInstance())) {
+            calendar.add(Calendar.DAY_OF_MONTH, 1);
+        }
+        Intent intent = new Intent(getContext(), NotificationReceiver.class);
+        intent.putExtra("message", "Log in your workout today!");
+
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                getContext(),
+                0,
+                intent,
+                PendingIntent.FLAG_IMMUTABLE
+        );
+        AlarmManager alarmManager = (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            if (alarmManager.canScheduleExactAlarms()) {
+                alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+            } else {
+            }
+        } else {
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+        }
+    }
+
+
+
+
+
+
+
+
 }
